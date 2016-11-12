@@ -1,0 +1,16 @@
+\documentclass{standalone}
+\usepackage{../karnaugh-map}
+\begin{document}
+  \begin{karnaugh-map}*[4][4][1]
+    \implicant{0}{0}
+    \implicant{4}{5}
+    \implicant{12}{15}
+    \implicant{8}{10}
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][1]
+    \implicant{0}{0}
+    \implicant{4}{5}
+    \implicant{12}{15}
+    \implicant{8}{10}
+  \end{karnaugh-map}
+\end{document}

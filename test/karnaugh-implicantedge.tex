@@ -1,0 +1,69 @@
+\documentclass{standalone}
+\usepackage{../karnaugh-map}
+\begin{document}
+  % vertical and horizontal implicants(when possible), default submap
+  \begin{karnaugh-map}[2][4][1]
+    \implicantedge{0}{1}{4}{5}
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][2][1]
+    \implicantedge{1}{3}{5}{7}
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][1]
+    \implicantedge{1}{3}{9}{11}
+    \implicantedge{4}{12}{6}{14}
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][2]
+    \implicantedge{1}{3}{9}{11}
+    \implicantedge{4}{12}{6}{14}
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][4]
+    \implicantedge{1}{3}{9}{11}
+    \implicantedge{4}{12}{6}{14}
+  \end{karnaugh-map}
+  % draw on 0th and 2nd submaps(when possible)
+  \begin{karnaugh-map}[2][4][1]
+    \implicantedge{0}{1}{4}{5}[0,2]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][2][1]
+    \implicantedge{1}{3}{5}{7}[0,2]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][1]
+    \implicantedge{1}{3}{9}{11}[0,2]
+    \implicantedge{4}{12}{6}{14}[0,2]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][2]
+    \implicantedge{1}{3}{9}{11}[0,2]
+    \implicantedge{4}{12}{6}{14}[0,2]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][4]
+    \implicantedge{1}{3}{9}{11}[0,2]
+    \implicantedge{4}{12}{6}{14}[0,2]
+  \end{karnaugh-map}
+  % draw multiple different implicants
+  \begin{karnaugh-map}[2][4][1]
+    \implicantedge{0}{1}{4}{5}[0]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][2][1]
+    \implicantedge{1}{3}{5}{7}[0]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][1]
+    \implicantedge{1}{3}{9}{11}[0]
+    \implicantedge{4}{12}{6}{14}[0]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][2]
+    \implicantedge{1}{3}{9}{11}[0]
+    \implicantedge{4}{12}{6}{14}[0]
+    \implicantedge{1}{3}{9}{11}[1]
+    \implicantedge{4}{12}{6}{14}[1]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][4]
+    \implicantedge{1}{3}{9}{11}[0]
+    \implicantedge{4}{12}{6}{14}[0]
+    \implicantedge{1}{3}{9}{11}[1]
+    \implicantedge{4}{12}{6}{14}[1]
+    \implicantedge{1}{3}{9}{11}[2]
+    \implicantedge{4}{12}{6}{14}[2]
+    \implicantedge{1}{3}{9}{11}[3]
+    \implicantedge{4}{12}{6}{14}[3]
+  \end{karnaugh-map}
+\end{document}

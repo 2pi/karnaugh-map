@@ -1,0 +1,1194 @@
+% \iffalse meta-comment
+% Copyright (C) 2015 by 2pi
+% \fi
+%
+% \iffalse
+%
+%<package>
+%<package>%%
+%<package>%% Copyright (C) 2015 by 2pi
+%<package>%%
+%<package>
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{karnaugh-map}[2015/10/09 v1.0 Draw Karnaugh Maps]
+%
+%<*driver>
+  \documentclass{ltxdoc}
+  \usepackage{karnaugh-map}
+  \usepackage{multicol}% for documentation
+  \usepackage{tabularx}% for documentation
+  \usepackage{float}% for documentation
+  \usepackage{hyperref}% for documentation
+  \setlength{\parindent}{0pt}
+  \setlength{\parskip}{0.7em}
+  \EnableCrossrefs
+  \CodelineIndex
+  \RecordChanges
+  \OnlyDescription
+  \begin{document}
+    \DocInput{karnaugh-map.dtx}
+  \end{document}
+%</driver>
+% \fi
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v1.0}{2015/10/09}{Initial version}
+%
+% \GetFileInfo{karnaugh-map.sty}
+%
+% \title{The \textsf{karnaugh-map} package}
+% \author{2pi}
+% \date{\textsf{karnaugh-map}~\fileversion, \filedate}
+%
+%\maketitle
+%
+% \begin{abstract}
+%   This package draws karnaugh maps with 2, 3, 4, 5, and 6 variables.
+%   It also contains commands for filling the karnaugh map with terms semi-automatically or manually.
+%   Last but not least it contains commands for drawing implicants on top of the map.
+%   Below is an example of a two variable karnaugh map of $X_0 \oplus X_1$.
+% \end{abstract}
+% \begin{figure}[H]
+%   \centering
+%   \begin{karnaugh-map}[2][2][1][$X_0$][$X_1$]
+%     \minterms{1,2}
+%     \autoterms[0]
+%     \implicant{1}{1}
+%     \implicant{2}{2}
+%   \end{karnaugh-map}
+% \end{figure}
+% \tableofcontents
+% \pagebreak
+%
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+
+%%
+%% Dependencies
+%%
+
+%% parsing arguments
+\RequirePackage{xparse}
+
+%% working with strings
+\RequirePackage{xstring}
+
+%% drawing
+\RequirePackage{tikz}
+\usetikzlibrary{calc,matrix}
+
+%%
+%% Helpers
+%%
+
+%% convert decimal to color
+\newcommand{\@karnaughmap@func@decimaltocolor@}[1]{%
+  \ifnum#1=0 red\fi
+  \ifnum#1=1 green\fi
+  \ifnum#1=2 yellow\fi
+  \ifnum#1=3 cyan\fi
+  \ifnum#1=4 blue\fi
+  \ifnum#1=5 magenta\fi
+  \ifnum#1>5 cyan\fi
+}
+
+%% convert decimal to binary 6-bit
+\newcommand{\@karnaughmap@func@decimaltobin@}[1]{%
+  \ifnum#1=0 000000\fi
+  \ifnum#1=1 000001\fi
+  \ifnum#1=2 000010\fi
+  \ifnum#1=3 000011\fi
+  \ifnum#1=4 000100\fi
+  \ifnum#1=5 000101\fi
+  \ifnum#1=6 000110\fi
+  \ifnum#1=7 000111\fi
+  \ifnum#1=8 001000\fi
+  \ifnum#1=9 001001\fi
+  \ifnum#1=10 001010\fi
+  \ifnum#1=11 001011\fi
+  \ifnum#1=12 001100\fi
+  \ifnum#1=13 001101\fi
+  \ifnum#1=14 001110\fi
+  \ifnum#1=15 001111\fi
+  \ifnum#1=16 010000\fi
+  \ifnum#1=17 010001\fi
+  \ifnum#1=18 010010\fi
+  \ifnum#1=19 010011\fi
+  \ifnum#1=20 010100\fi
+  \ifnum#1=21 010101\fi
+  \ifnum#1=22 010110\fi
+  \ifnum#1=23 010111\fi
+  \ifnum#1=24 011000\fi
+  \ifnum#1=25 011001\fi
+  \ifnum#1=26 011010\fi
+  \ifnum#1=27 011011\fi
+  \ifnum#1=28 011100\fi
+  \ifnum#1=29 011101\fi
+  \ifnum#1=30 011110\fi
+  \ifnum#1=31 011111\fi
+  \ifnum#1=32 100000\fi
+  \ifnum#1=33 100001\fi
+  \ifnum#1=34 100010\fi
+  \ifnum#1=35 100011\fi
+  \ifnum#1=36 100100\fi
+  \ifnum#1=37 100101\fi
+  \ifnum#1=38 100110\fi
+  \ifnum#1=39 100111\fi
+  \ifnum#1=40 101000\fi
+  \ifnum#1=41 101001\fi
+  \ifnum#1=42 101010\fi
+  \ifnum#1=43 101011\fi
+  \ifnum#1=44 101100\fi
+  \ifnum#1=45 101101\fi
+  \ifnum#1=46 101110\fi
+  \ifnum#1=47 101111\fi
+  \ifnum#1=48 110000\fi
+  \ifnum#1=49 110001\fi
+  \ifnum#1=50 110010\fi
+  \ifnum#1=51 110011\fi
+  \ifnum#1=52 110100\fi
+  \ifnum#1=53 110101\fi
+  \ifnum#1=54 110110\fi
+  \ifnum#1=55 110111\fi
+  \ifnum#1=56 111000\fi
+  \ifnum#1=57 111001\fi
+  \ifnum#1=58 111010\fi
+  \ifnum#1=59 111011\fi
+  \ifnum#1=60 111100\fi
+  \ifnum#1=61 111101\fi
+  \ifnum#1=62 111110\fi
+  \ifnum#1=63 111111\fi
+}
+
+%% command raises an error if executed outside the karnaugh-map environment
+\newcommand{\@karnaughmap@func@bailoutsideenvironment@}[0]{%
+  \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=000
+    \PackageError{karnaugh-map}{%
+      Command can not be used outside karnaugh-map environment%
+    }{%
+      Do not use this command outside the karnaugh-map environment.%
+    }
+  \fi
+}
+
+%% store map size
+\newcommand{\@karnaughmap@var@mapsizex@}{0}
+\newcommand{\@karnaughmap@var@mapsizey@}{0}
+\newcommand{\@karnaughmap@var@mapsizez@}{0}
+
+%% render in black and white or color default to '0'(false/color)
+\newcommand{\@karnaughmap@var@bw@}{0}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+%
+% \section{Usage}
+%
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+
+%%
+%% Environment
+%%
+
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \begin{environment}{karnaugh-map}
+%    The |karnaugh-map| environment is the base for this package, and everything related to this package happens inside an instances of this environment.
+%
+%    \textbf{Usage:}
+%
+%    \begin{tabularx}{\textwidth}{l X}
+%      \small{|\begin{karnaugh-map}|} & \\
+%      \small{\meta{*}}           & \small{One asterisk for black and white implicants, non for colorized implicants} \\
+%      \small{\oarg{X size}}      & \small{Number of X-axis cells. Default: ''4''} \\
+%      \small{\oarg{Y size}}      & \small{Number of Y-axis cells. Default: ''4''} \\
+%      \small{\oarg{Z size}}      & \small{Number of X$\times$Y submaps. Default: ''1''} \\
+%      \small{\oarg{X label}}     & \small{Label for the X-axis. Default: ''$X_1X_0$''} \\
+%      \small{\oarg{Y label}}     & \small{Label for the Y-axis. Default: ''$X_3X_2$''} \\
+%      \small{\oarg{Z label}}     & \small{Label for the submaps. Default: ''$X_5X_4$''} \\
+%    \end{tabularx}
+%
+%    \textbf{Example:}
+%
+%    Four variable karnaugh map, colorized, with X label $X_1X_0$, and Y label $X_3X_2$.
+%    \begin{verbatim}
+%\begin{karnaugh-map}
+%\end{karnaugh-map}
+%
+%or
+%
+%\begin{karnaugh-map}[4][4][1][$X_1X_0$][$X_3X_2$]
+%\end{karnaugh-map}
+%    \end{verbatim}
+%    Six variable karnaugh map, black and white, with X label $ba$, Y label $dc$, and Z label $fe$.
+%    \begin{verbatim}
+%\begin{karnaugh-map}*[4][4][4][$ba$][$dc$][$fe$]
+%\end{karnaugh-map}
+%    \end{verbatim}
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+\NewDocumentEnvironment{karnaugh-map}{s O{4} O{4} O{1} O{$X_1X_0$} O{$X_3X_2$} O{$X_5X_4$}} {%
+  \begingroup
+    % store map size {[START]
+      \renewcommand{\@karnaughmap@var@mapsizex@}{#2}%
+      \renewcommand{\@karnaughmap@var@mapsizey@}{#3}%
+      \renewcommand{\@karnaughmap@var@mapsizez@}{#4}%
+    % [END]}
+    % determinate if markings should be color or black and white
+    \IfBooleanTF{#1}{%
+      % should be black and white
+      \renewcommand{\@karnaughmap@var@bw@}{1}%
+    }{%
+      % should be color
+      \renewcommand{\@karnaughmap@var@bw@}{0}%
+    }%
+    %
+    % find matching matrix template and alignment parameters {[START]
+      \newcommand{\@karnaughmap@local@matrixtemplate@}{0}% '0' is considered as missing matrix template
+      \newcommand{\@karnaughmap@local@maprealignmentx@}{0}%
+      \newcommand{\@karnaughmap@local@maprealignmenty@}{0}%
+      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=221
+        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                       \&                       0 \&                       1 \& \phantom{0} \\
+                     0 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \&             \\
+                     1 \& |(000010)|  \phantom{0} \& |(000011)|  \phantom{0} \&             \\
+          \phantom{0}  \&                         \&                         \&             \\
+        }%
+      \fi
+      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=241
+        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                       \&                       0 \&                       1 \& \phantom{00} \\
+                    00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \&              \\
+                    01 \& |(000010)|  \phantom{0} \& |(000011)|  \phantom{0} \&              \\
+                    11 \& |(000110)|  \phantom{0} \& |(000111)|  \phantom{0} \&              \\
+                    10 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \&              \\
+          \phantom{00} \&                         \&                         \&              \\
+        }%
+      \fi
+      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=421
+        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                       \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
+                    0  \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \\
+                    1  \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \\
+          \phantom{00} \&                         \&                         \&                         \&                         \&              \\
+        }%
+      \fi
+      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=441
+        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                       \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
+                    00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \\
+                    01 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \\
+                    11 \& |(001100)|  \phantom{0} \& |(001101)|  \phantom{0} \& |(001111)|  \phantom{0} \& |(001110)|  \phantom{0} \&              \\
+                    10 \& |(001000)|  \phantom{0} \& |(001001)|  \phantom{0} \& |(001011)|  \phantom{0} \& |(001010)|  \phantom{0} \&              \\
+          \phantom{00} \&                         \&                         \&                         \&                         \&              \\
+        }%
+      \fi
+      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=442
+        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                       \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
+                    00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \& |(010000)|  \phantom{0} \& |(010001)|  \phantom{0} \& |(010011)|  \phantom{0} \& |(010010)|  \phantom{0} \&              \\
+                    01 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \& |(010100)|  \phantom{0} \& |(010101)|  \phantom{0} \& |(010111)|  \phantom{0} \& |(010110)|  \phantom{0} \&              \\
+                    11 \& |(001100)|  \phantom{0} \& |(001101)|  \phantom{0} \& |(001111)|  \phantom{0} \& |(001110)|  \phantom{0} \&              \& |(011100)|  \phantom{0} \& |(011101)|  \phantom{0} \& |(011111)|  \phantom{0} \& |(011110)|  \phantom{0} \&              \\
+                    10 \& |(001000)|  \phantom{0} \& |(001001)|  \phantom{0} \& |(001011)|  \phantom{0} \& |(001010)|  \phantom{0} \&              \& |(011000)|  \phantom{0} \& |(011001)|  \phantom{0} \& |(011011)|  \phantom{0} \& |(011010)|  \phantom{0} \&              \\
+          \phantom{00} \&                         \&                         \&                         \&                         \&              \&                         \&                         \&                         \&                         \&              \\
+        }%
+        \renewcommand{\@karnaughmap@local@maprealignmentx@}{2.5}%
+      \fi
+      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=444
+        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                       \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
+                    00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \& |(010000)|  \phantom{0} \& |(010001)|  \phantom{0} \& |(010011)|  \phantom{0} \& |(010010)|  \phantom{0} \&              \\
+                    01 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \& |(010100)|  \phantom{0} \& |(010101)|  \phantom{0} \& |(010111)|  \phantom{0} \& |(010110)|  \phantom{0} \&              \\
+                    11 \& |(001100)|  \phantom{0} \& |(001101)|  \phantom{0} \& |(001111)|  \phantom{0} \& |(001110)|  \phantom{0} \&              \& |(011100)|  \phantom{0} \& |(011101)|  \phantom{0} \& |(011111)|  \phantom{0} \& |(011110)|  \phantom{0} \&              \\
+                    10 \& |(001000)|  \phantom{0} \& |(001001)|  \phantom{0} \& |(001011)|  \phantom{0} \& |(001010)|  \phantom{0} \&              \& |(011000)|  \phantom{0} \& |(011001)|  \phantom{0} \& |(011011)|  \phantom{0} \& |(011010)|  \phantom{0} \&              \\
+          \phantom{00} \&                         \&                         \&                         \&                         \&              \&                         \&                         \&                         \&                         \&              \\
+                    00 \& |(100000)|  \phantom{0} \& |(100001)|  \phantom{0} \& |(100011)|  \phantom{0} \& |(100010)|  \phantom{0} \&              \& |(110000)|  \phantom{0} \& |(110001)|  \phantom{0} \& |(110011)|  \phantom{0} \& |(110010)|  \phantom{0} \&              \\
+                    01 \& |(100100)|  \phantom{0} \& |(100101)|  \phantom{0} \& |(100111)|  \phantom{0} \& |(100110)|  \phantom{0} \&              \& |(110100)|  \phantom{0} \& |(110101)|  \phantom{0} \& |(110111)|  \phantom{0} \& |(110110)|  \phantom{0} \&              \\
+                    11 \& |(101100)|  \phantom{0} \& |(101101)|  \phantom{0} \& |(101111)|  \phantom{0} \& |(101110)|  \phantom{0} \&              \& |(111100)|  \phantom{0} \& |(111101)|  \phantom{0} \& |(111111)|  \phantom{0} \& |(111110)|  \phantom{0} \&              \\
+                    10 \& |(101000)|  \phantom{0} \& |(101001)|  \phantom{0} \& |(101011)|  \phantom{0} \& |(101010)|  \phantom{0} \&              \& |(111000)|  \phantom{0} \& |(111001)|  \phantom{0} \& |(111011)|  \phantom{0} \& |(111010)|  \phantom{0} \&              \\
+          \phantom{00} \&                         \&                         \&                         \&                         \&              \&                         \&                         \&                         \&                         \&              \\
+        }%
+        \renewcommand{\@karnaughmap@local@maprealignmentx@}{2.5}%
+        \renewcommand{\@karnaughmap@local@maprealignmenty@}{-2.5}%
+      \fi
+    % [END]}
+    % test if a matrix template is found or not(aka "\@karnaughmap@local@matrixtemplate@" equals to '0')
+    \ifnum0=\@karnaughmap@local@matrixtemplate@
+      % print error if no template could be found
+      \PackageError{karnaugh-map}{%
+        Can not find a template fitting your specification (\@karnaughmap@var@mapsizex@\space x \@karnaughmap@var@mapsizey@\space x \@karnaughmap@var@mapsizez@)%
+      }{%
+        Existing templates have the following dimensions: 2x2x1, 2x4x1, 4x2x1, 4x4x1, 4x4x2, and 4x4x4.
+      }%
+    \fi
+    \begin{tikzpicture}
+      % grid
+      % for all dimensions
+      \draw[color=black, ultra thin] (0,0) grid (\@karnaughmap@var@mapsizex@,\@karnaughmap@var@mapsizey@);
+      % when there are 2 sub maps
+      \ifnum\@karnaughmap@var@mapsizez@=2
+        \draw[color=black, ultra thin] (5,0) grid (9,4);
+      \fi
+      % when there are 4 sub maps
+      \ifnum\@karnaughmap@var@mapsizez@=4
+        \draw[color=black, ultra thin] (5,0) grid (9,4);
+        \draw[color=black, ultra thin] (0,-5) grid (4,-1);
+        \draw[color=black, ultra thin] (5,-5) grid (9,-1);
+      \fi
+      % labels
+      % for all dimensions
+      \node[above] at (\@karnaughmap@var@mapsizex@*0.5,\@karnaughmap@var@mapsizey@+0.9) {\small{#5}};
+      \node[left] at (-0.9,\@karnaughmap@var@mapsizey@*0.5) {\small{#6}};
+      % when there are 2 sub maps
+      \ifnum\@karnaughmap@var@mapsizez@=2
+        \node[above] at (7,4.9) {\small{#5}};
+        % extra sub maps labels
+        \node[below] at (2,-0.1) {\small{#7$=0$}};
+        \node[below] at (7,-0.1) {\small{#7$=1$}};
+      \fi
+      % when there are 4 sub maps
+      \ifnum\@karnaughmap@var@mapsizez@=4
+        \node[above] at (7,4.9) {\small{#5}};
+        \node[left] at (-0.9,-3) {\small{#6}};
+        % extra sub maps labels
+        \node[below] at (2,-0.1) {\small{#7$=00$}};
+        \node[below] at (7,-0.1) {\small{#7$=01$}};
+        \node[below] at (2,-5.1) {\small{#7$=10$}};
+        \node[below] at (7,-5.1) {\small{#7$=11$}};
+      \fi
+      % data
+      \matrix[
+        matrix of nodes,
+        ampersand replacement=\&,
+        column sep={1cm,between origins},
+        row sep={1cm,between origins},
+      ] at (\@karnaughmap@var@mapsizex@*0.5+\@karnaughmap@local@maprealignmentx@,\@karnaughmap@var@mapsizey@*0.5+\@karnaughmap@local@maprealignmenty@) {
+        \@karnaughmap@local@matrixtemplate@%
+      };
+}{
+    \end{tikzpicture}
+  \endgroup
+}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \end{environment}
+%
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+
+%%
+%% Commands for filling out the cells
+%%
+
+%% store already used cells to avoid double filled cells and for auto completion
+\newcommand{\@karnaughmap@var@usedcells@}{,}
+
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+%
+% \newpage
+% \subsection{Terms}
+% \begin{macro}{\autoterms}
+%    The |\autoterms| command fills the remaining unfilled cells of the karnaugh map with the contents of the optional argument.
+%
+%    \textbf{Usage:}
+%
+%    \begin{tabularx}{\textwidth}{l X}
+%      \small{|\autoterms|}   & \\
+%      \small{\oarg{content}} & \small{Content for the remaining unfilled cells. Default: ''-''}
+%    \end{tabularx}
+%
+%    \textbf{Example:}
+%
+%    Fill all remaining unfilled cells with ''-''.
+%    \begin{verbatim}
+%\begin{karnaugh-map}
+%  \autoterms[-]
+%\end{karnaugh-map}
+%    \end{verbatim}
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+\DeclareDocumentCommand{\autoterms}{O{-}} {%
+  % bail if outside environment karnaugh-map
+  \@karnaughmap@func@bailoutsideenvironment@{}
+  %
+  \begingroup
+    % calculate max cell number {[START]
+      \newcount\@karnaughmap@local@max@\relax
+      \@karnaughmap@local@max@=\@karnaughmap@var@mapsizex@\relax
+      \multiply\@karnaughmap@local@max@ by \@karnaughmap@var@mapsizey@\relax
+      \multiply\@karnaughmap@local@max@ by \@karnaughmap@var@mapsizez@\relax
+      \advance\@karnaughmap@local@max@ by -1\relax
+    % [END]}
+    % fill terms
+    \foreach \cell in {0,1,2,...,\@karnaughmap@local@max@} {%
+      \IfSubStr{\@karnaughmap@var@usedcells@}{,\cell,}{}{%
+        \path (\@karnaughmap@func@decimaltobin@{\cell}) node {#1};
+      }
+    }
+  \endgroup
+  % update \@karnaughmap@var@usedcells@ (all cells are used now)
+  \renewcommand{\@karnaughmap@var@usedcells@}{,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,}
+}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \end{macro}
+%
+% \begin{macro}{\indeterminants}
+%    The |\indeterminants| command fills the specified cells with ''-'' if they aren't already filled. Order of the cell numbers does not matter.
+%
+%    \textbf{Usage:}
+%
+%    \begin{tabularx}{\textwidth}{l X}
+%      \small{|\indeterminants|} & \\
+%      \small{\marg{cells}}   & \small{Comma separated list of cells to fill with ''-''}
+%    \end{tabularx}
+%
+%    \textbf{Example:}
+%
+%    Fill the top left and right cell with ''-''.
+%    \begin{verbatim}
+%\begin{karnaugh-map}
+%  \indeterminants{0,2}
+%\end{karnaugh-map}
+%    \end{verbatim}
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+\DeclareDocumentCommand{\indeterminants}{m} {%
+  % bail if outside environment karnaugh-map
+  \@karnaughmap@func@bailoutsideenvironment@{}
+  %
+  \foreach \cell in {#1} {%
+    % only write to cell if it is empty otherwise fail silently
+    \IfSubStr{\@karnaughmap@var@usedcells@}{,\cell,}{}{%
+      \path (\@karnaughmap@func@decimaltobin@{\cell}) node {-};
+    }
+  }
+  % update \@karnaughmap@var@usedcells@
+  \expandafter\def\expandafter\@karnaughmap@var@usedcells@\expandafter{\@karnaughmap@var@usedcells@#1,}
+}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \end{macro}
+%
+% \newpage
+% \begin{macro}{\manualterms}
+%    The |\manualterms| command fills the 0th cell with the first element in the argument, the 1st cell with the second element in the argument, and so on. If any of the cells already is filled, it is left as it was.
+%
+%    \textbf{Usage:}
+%
+%    \begin{tabularx}{\textwidth}{l X}
+%      \small{|\manualterms|} & \\
+%      \small{\marg{content}} & \small{Comma separated list of cell contents}
+%    \end{tabularx}
+%
+%    \textbf{Example:}
+%
+%    Fill the first four cells with 0, 1, 0, and 1 respectively.
+%    \begin{verbatim}
+%\begin{karnaugh-map}
+%  \manualterms{0,1,0,1}
+%\end{karnaugh-map}
+%    \end{verbatim}
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+\DeclareDocumentCommand{\manualterms}{m} {%
+  % bail if outside environment karnaugh-map
+  \@karnaughmap@func@bailoutsideenvironment@{}
+  %
+  \foreach \cellinfo [count=\cell from 0] in {#1} {%
+    % only write to cell if it is empty otherwise fail silently
+    \IfSubStr{\@karnaughmap@var@usedcells@}{,\cell,}{}{%
+      \path (\@karnaughmap@func@decimaltobin@{\cell}) node {\cellinfo};
+    }
+  }
+  % update \@karnaughmap@var@usedcells@ (previous cells + all cells up to \@karnaughmap@local@cellcount@ are used now) {[START]
+    \newcommand{\@karnaughmap@local@tmpusedcells@}{}
+    \newcount\@karnaughmap@local@cellcount@\relax
+    % count number of cells in #1 {[START]
+      \StrCount{#1}{,}[\@karnaughmap@local@tmpusedcells@]
+      \@karnaughmap@local@cellcount@=\@karnaughmap@local@tmpusedcells@\relax
+      \advance\@karnaughmap@local@cellcount@ by 1\relax
+      \multiply\@karnaughmap@local@cellcount@ by 2\relax
+    % [END]}
+    % create sequence for \@karnaughmap@local@tmpusedcells@
+    \StrLeft{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,}{\@karnaughmap@local@cellcount@}[\@karnaughmap@local@tmpusedcells@]
+    % update \@karnaughmap@var@usedcells@ (append \@karnaughmap@local@tmpusedcells@)
+    \expandafter\def\expandafter\@karnaughmap@var@usedcells@\expandafter{\@karnaughmap@var@usedcells@\@karnaughmap@local@tmpusedcells@}
+  % [END]}
+}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \end{macro}
+%
+% \begin{macro}{\maxterms}
+%    The |\maxterms| command fills the specified cells with ''0'' if they aren't already filled. Order of the cell numbers does not matter.
+%
+%    \textbf{Usage:}
+%
+%    \begin{tabularx}{\textwidth}{l X}
+%      \small{|\maxterms|}  & \\
+%      \small{\marg{cells}} & \small{Comma separated list of cells to fill with ''0''} \\
+%    \end{tabularx}
+%
+%    \textbf{Example:}
+%
+%    Fill the top left and right cell with ''0''.
+%    \begin{verbatim}
+%\begin{karnaugh-map}
+%  \maxterms{0,2}
+%\end{karnaugh-map}
+%    \end{verbatim}
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+\DeclareDocumentCommand{\maxterms}{m} {%
+  % bail if outside environment karnaugh-map
+  \@karnaughmap@func@bailoutsideenvironment@{}
+  %
+  \foreach \cell in {#1} {%
+    % only write to cell if it is empty otherwise fail silently
+    \IfSubStr{\@karnaughmap@var@usedcells@}{,\cell,}{}{%
+      \path (\@karnaughmap@func@decimaltobin@{\cell}) node {0};
+    }
+  }
+  % update \@karnaughmap@var@usedcells@
+  \expandafter\def\expandafter\@karnaughmap@var@usedcells@\expandafter{\@karnaughmap@var@usedcells@#1,}
+}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \end{macro}
+%
+% \begin{macro}{\minterms}
+%    The |\minterms| command fills the specified cells with ''1'' if they aren't already filled. Order of the cell numbers does not matter.
+%
+%    \textbf{Usage:}
+%
+%    \begin{tabularx}{\textwidth}{l X}
+%      \small{|\minterms|}  & \\
+%      \small{\marg{cells}} & \small{Comma separated list of cells to fill with ''1''} \\
+%    \end{tabularx}
+%
+%    \textbf{Example:}
+%
+%    Fill the top left and right cell with ''1''.
+%    \begin{verbatim}
+%\begin{karnaugh-map}
+%  \minterms{0,2}
+%\end{karnaugh-map}
+%    \end{verbatim}
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+\DeclareDocumentCommand{\minterms}{m} {%
+  % bail if outside environment karnaugh-map
+  \@karnaughmap@func@bailoutsideenvironment@{}
+  %
+  \foreach \cell in {#1} {%
+    % only write to cell if it is empty otherwise fail silently
+    \IfSubStr{\@karnaughmap@var@usedcells@}{,\cell,}{}{%
+      \path (\@karnaughmap@func@decimaltobin@{\cell}) node {1};
+    }
+  }
+  % update \@karnaughmap@var@usedcells@
+  \expandafter\def\expandafter\@karnaughmap@var@usedcells@\expandafter{\@karnaughmap@var@usedcells@#1,}
+}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \end{macro}
+%
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+
+%%
+%% Commands for marking the cells
+%%
+
+%% keep track of used colors
+\newcount\@karnaughmap@var@colorindex@\relax
+\@karnaughmap@var@colorindex@=0\relax
+
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+%
+% \newpage
+% \subsection{Implicants}
+% \begin{macro}{\implicant}
+%    The |\implicant| command draws quadratic implicants on one or multiple submaps. If the implicant shall be drawn on multiple submaps, \marg{northwest cell} and \marg{southeast cell} must be specified as if the implicant was to be drawn on the 0:th submap. When turned on, colorization is done automatically, following a global sequence of available colors.
+%
+%    \textbf{Usage:}
+%
+%    \begin{tabularx}{\textwidth}{l X}
+%      \small{|\implicant|}          & \\
+%      \small{\marg{northwest cell}} & \small{The most northwest cell in the implicant} \\
+%      \small{\marg{southeast cell}} & \small{The most southeast cell in the implicant} \\
+%      \small{\oarg{submaps}}        & \small{Comma separated list of submaps the implicant should be drawn on. Default: ''0''} \\
+%    \end{tabularx}
+%
+%    \textbf{Example:}
+%
+%    \begin{multicols}{2}
+%      [Implicant around the four most inner cells.]
+%      \begin{verbatim}
+%\begin{karnaugh-map}
+%  \implicant{5}{15}
+%\end{karnaugh-map}
+%      \end{verbatim}
+%      \columnbreak
+%      \resizebox{\columnwidth}{!}{
+%        \begin{karnaugh-map}
+%          \implicant{5}{15}
+%        \end{karnaugh-map}
+%      }
+%    \end{multicols}
+%    \begin{multicols}{2}
+%      [Single cell implicant, 0:th cell, on all four submaps.]
+%      \begin{verbatim}
+%\begin{karnaugh-map}[4][4][4]
+%  \implicant{0}{0}[0,1,2,3]
+%\end{karnaugh-map}
+%      \end{verbatim}
+%      \columnbreak
+%      \resizebox{\columnwidth}{!}{
+%        \begin{karnaugh-map}[4][4][4]
+%          \implicant{0}{0}[0,1,2,3]
+%        \end{karnaugh-map}
+%      }
+%    \end{multicols}
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+\DeclareDocumentCommand{\implicant}{m m O{0}} {%
+  % bail if outside environment karnaugh-map
+  \@karnaughmap@func@bailoutsideenvironment@{}
+  %
+  \begingroup
+    % loop through specified sub maps
+    \foreach \map in {#3} {%
+      % make sure we don't try to draw on non existing sub maps
+      \ifnum\map<\@karnaughmap@var@mapsizez@
+        % calculate cell number for the specified sub maps {[START]
+          \newcount\@karnaughmap@local@northwest@\relax
+          \newcount\@karnaughmap@local@southeast@\relax
+          \@karnaughmap@local@northwest@=\map\relax
+          \@karnaughmap@local@southeast@=\map\relax
+          \multiply\@karnaughmap@local@northwest@ by 16\relax
+          \multiply\@karnaughmap@local@southeast@ by 16\relax
+          \advance\@karnaughmap@local@northwest@ by #1\relax
+          \advance\@karnaughmap@local@southeast@ by #2\relax
+        % [END]}
+        % only fill marking when \@karnaughmap@var@bw@ = '0'
+        \ifnum0=\@karnaughmap@var@bw@
+          \fill[
+            rounded corners=3pt,
+            fill=\@karnaughmap@func@decimaltocolor@{\@karnaughmap@var@colorindex@},
+            fill opacity=0.25,
+          ] {
+            ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@northwest@}.center)+(-0.3,0.3)$)
+            rectangle
+            ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@southeast@}.center)+(0.3,-0.3)$)
+          };
+        \fi
+        \draw[
+          rounded corners=3pt,
+          draw opacity=1.0,
+        ] {
+          ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@northwest@}.center)+(-0.3,0.3)$)
+          rectangle
+          ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@southeast@}.center)+(0.3,-0.3)$)
+        };
+      \else
+        \PackageWarning{karnaugh-map}{%
+          You can only draw on existing sub maps.
+          Ignoring instruction to draw on non existing sub map number \map%
+        }
+      \fi
+    }
+  \endgroup
+  % mark color as used
+  \advance\@karnaughmap@var@colorindex@ by 1\relax
+}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \end{macro}
+%
+% \newpage
+% \begin{macro}{\implicantedge}
+%    The |\implicantedge| command draws quadratic implicants with the middle of the implicant facing the edge of a submap either horizontally or vertically. The function is able to draw the same implicant on one or multiple submaps. However if the implicant shall be drawn on multiple submaps, \marg{northwest part - northwest cell}, \marg{northwest part - southeast cell}, \marg{southeast part - northwest cell}, \marg{southeast part - southeast cell} must be specified as if the implicant was to be drawn on the 0:th submap. When turned on, colorization is done automatically, following a global sequence of available colors.
+%
+%    \textbf{Usage:}
+%
+%    \begin{tabularx}{\textwidth}{l X}
+%      \small{|\implicantedge|}                       & \\
+%      \small{\marg{northwest part - northwest cell}} & \small{The most northwest cell in the northwest part of the implicant} \\
+%      \small{\marg{northwest part - southeast cell}} & \small{The most southeast cell in the northwest part of the implicant} \\
+%      \small{\marg{southeast part - northwest cell}} & \small{The most northwest cell in the southeast part of the implicant} \\
+%      \small{\marg{southeast part - southeast cell}} & \small{The most southeast cell in the southeast part of the implicant} \\
+%      \small{\oarg{submaps}}                         & \small{Comma separated list of submaps the implicant should be drawn on. Default: ''0''} \\
+%    \end{tabularx}
+%
+%    \textbf{Example:}
+%
+%    \begin{multicols}{2}
+%      [Horizontal implicant over the submap edge containing the cells 4, 6, 12, and 14.]
+%      \begin{verbatim}
+%\begin{karnaugh-map}
+%  \implicantedge{4}{12}{6}{14}
+%\end{karnaugh-map}
+%      \end{verbatim}
+%      \columnbreak
+%      \resizebox{\columnwidth}{!}{
+%        \begin{karnaugh-map}
+%          \implicantedge{4}{12}{6}{14}
+%        \end{karnaugh-map}
+%      }
+%    \end{multicols}
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+\DeclareDocumentCommand{\implicantedge}{m m m m O{0}} {%
+  % bail if outside environment karnaugh-map
+  \@karnaughmap@func@bailoutsideenvironment@{}
+  %
+  \begingroup
+    % helper variables {[START]
+      \newcommand{\@karnaughmap@local@orientation@}{0} % '0' is a vertical and '1' is a horizontal implicant
+      \newcommand{\@karnaughmap@local@coordinateone@}{0}
+      \newcommand{\@karnaughmap@local@coordinatetwo@}{0}
+      \newcommand{\@karnaughmap@local@mirror@}{1} % '1' or '-1' to mirror
+      \newcommand{\@karnaughmap@local@bordercontent@}{}
+      \newcommand{\@karnaughmap@local@fillcontent@}{}
+    % [END]}
+    % determinate if this is an horizontal or vertical implicant {[START]
+      \newcount\@karnaughmap@local@testcaseone@\relax
+      \newcount\@karnaughmap@local@testcasetwo@\relax
+      \@karnaughmap@local@testcaseone@=#1\relax
+      \@karnaughmap@local@testcasetwo@=#1\relax
+      \advance\@karnaughmap@local@testcaseone@ by -#2\relax
+      \advance\@karnaughmap@local@testcasetwo@ by -#3\relax
+      \ifnum\@karnaughmap@local@testcaseone@<0 \multiply\@karnaughmap@local@testcaseone@ by -1\relax\fi
+      \ifnum\@karnaughmap@local@testcasetwo@<0 \multiply\@karnaughmap@local@testcasetwo@ by -1\relax\fi
+      % test case one
+      \ifnum\@karnaughmap@local@testcaseone@<\@karnaughmap@var@mapsizex@
+        % this is a vertical implicant
+        \renewcommand{\@karnaughmap@local@orientation@}{0}
+      \else
+        % this is a horizontal implicant
+        \renewcommand{\@karnaughmap@local@orientation@}{1}
+      \fi
+      % test case two
+      \ifnum\@karnaughmap@local@testcasetwo@<\@karnaughmap@var@mapsizex@
+        % this is a vertical implicant
+        \renewcommand{\@karnaughmap@local@orientation@}{1}
+      \fi
+    % [END]}
+    % loop through specified sub maps
+    \foreach \map in {#5} {%
+      % make sure we don't try to draw on non existing sub maps
+      \ifnum\map<\@karnaughmap@var@mapsizez@
+        % loop through both parts of the marking(ie. left and right part)
+        \foreach \i in {0,1} {%
+          % set parameters depending on the part of the marking(ie. left and right part) {[START]
+            \ifnum\i=0
+              \renewcommand{\@karnaughmap@local@coordinateone@}{#1}
+              \renewcommand{\@karnaughmap@local@coordinatetwo@}{#2}
+              \renewcommand{\@karnaughmap@local@mirror@}{1}
+            \else
+              \renewcommand{\@karnaughmap@local@coordinateone@}{#3}
+              \renewcommand{\@karnaughmap@local@coordinatetwo@}{#4}
+              \renewcommand{\@karnaughmap@local@mirror@}{-1}
+            \fi
+          % [END]}
+          % calculate cell numbers for the specified sub map {[START]
+            \newcount\@karnaughmap@local@coordinateonecounter@\relax
+            \newcount\@karnaughmap@local@coordinatetwocounter@\relax
+            \@karnaughmap@local@coordinateonecounter@=\map\relax
+            \@karnaughmap@local@coordinatetwocounter@=\map\relax
+            \multiply\@karnaughmap@local@coordinateonecounter@ by 16\relax
+            \multiply\@karnaughmap@local@coordinatetwocounter@ by 16\relax
+            \advance\@karnaughmap@local@coordinateonecounter@ by \@karnaughmap@local@coordinateone@\relax
+            \advance\@karnaughmap@local@coordinatetwocounter@ by \@karnaughmap@local@coordinatetwo@\relax
+            \renewcommand{\@karnaughmap@local@coordinateone@}{\@karnaughmap@local@coordinateonecounter@}
+            \renewcommand{\@karnaughmap@local@coordinatetwo@}{\@karnaughmap@local@coordinatetwocounter@}
+          % [END]}
+          % select drawing content depending on orientation {[START]
+            \ifnum\@karnaughmap@local@orientation@=0
+              % this is a vertical implicant
+              \renewcommand{\@karnaughmap@local@fillcontent@}{%
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinateone@}.center)+(-.3,.6*\@karnaughmap@local@mirror@)$)
+                --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinatetwo@}.center)+(.3,.6*\@karnaughmap@local@mirror@)$)
+                { [rounded corners=3pt] --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinatetwo@}.center)+(.3,-.3*\@karnaughmap@local@mirror@)$) }
+                { [rounded corners=3pt] --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinateone@}.center)+(-.3,-.3*\@karnaughmap@local@mirror@)$) }
+                -- cycle
+              }
+              \renewcommand{\@karnaughmap@local@bordercontent@}{%
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinatetwo@}.center)+(.3,.6*\@karnaughmap@local@mirror@)$)
+                { [rounded corners=3pt] --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinatetwo@}.center)+(.3,-.3*\@karnaughmap@local@mirror@)$) }
+                { [rounded corners=3pt] --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinateone@}.center)+(-.3,-.3*\@karnaughmap@local@mirror@)$) }
+                --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinateone@}.center)+(-.3,.6*\@karnaughmap@local@mirror@)$)
+              }
+            \else
+              % this is a horizontal implicant
+              \renewcommand{\@karnaughmap@local@fillcontent@}{%
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinatetwo@}.center)+(-.6*\@karnaughmap@local@mirror@,-.3)$)
+                --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinateone@}.center)+(-.6*\@karnaughmap@local@mirror@,.3)$)
+                { [rounded corners=3pt] --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinateone@}.center)+(.3*\@karnaughmap@local@mirror@,.3)$) }
+                { [rounded corners=3pt] --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinatetwo@}.center)+(.3*\@karnaughmap@local@mirror@,-.3)$) }
+                -- cycle
+              }
+              \renewcommand{\@karnaughmap@local@bordercontent@}{%
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinateone@}.center)+(-.6*\@karnaughmap@local@mirror@,.3)$)
+                { [rounded corners=3pt] --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinateone@}.center)+(.3*\@karnaughmap@local@mirror@,.3)$) }
+                { [rounded corners=3pt] --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinatetwo@}.center)+(.3*\@karnaughmap@local@mirror@,-.3)$) }
+                --
+                ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinatetwo@}.center)+(-.6*\@karnaughmap@local@mirror@,-.3)$)
+              }
+            \fi
+          % [END]}
+          % draw
+          % only fill marking when \@karnaughmap@var@bw@ = '0'
+          \ifnum0=\@karnaughmap@var@bw@
+            \fill[
+              sharp corners,
+              fill=\@karnaughmap@func@decimaltocolor@{\@karnaughmap@var@colorindex@},
+              fill opacity=0.25,
+            ] {
+              \@karnaughmap@local@fillcontent@%
+            };
+          \fi
+          \draw[
+            sharp corners,
+            draw opacity=1.0,
+          ] {
+            \@karnaughmap@local@bordercontent@%
+          };
+        }
+      \else
+        \PackageWarning{karnaugh-map}{%
+          You can only draw on existing sub maps.
+          Ignoring instruction to draw on non existing sub map number \map%
+        }
+      \fi
+    }
+  \endgroup
+  % mark color as used
+  \advance\@karnaughmap@var@colorindex@ by 1\relax
+}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \end{macro}
+%
+% \newpage
+% \begin{macro}{\implicantcorner}
+%    The |\implicantcorner| command draws an implicant around only the four corner pieces on one or multiple four variable karnaugh submaps. When turned on, colorization is done automatically, following a global sequence of available colors.
+%
+%    \textbf{Usage:}
+%
+%    \begin{tabularx}{\textwidth}{l X}
+%      \small{|\implicantcorner|} & \\
+%      \small{\oarg{submaps}}     & \small{Comma separated list of submaps the implicant should be drawn on. Default: ''0''} \\
+%    \end{tabularx}
+%
+%    \textbf{Example:}
+%
+%    \begin{multicols}{2}
+%      [Draw an implicant around all corners on 0th and 2nd submap of a six variable karnaugh map.]
+%      \begin{verbatim}
+%\begin{karnaugh-map}[4][4][4]
+%  \implicantcorner[0,2]
+%\end{karnaugh-map}
+%      \end{verbatim}
+%      \columnbreak
+%      \resizebox{\columnwidth}{!}{
+%        \begin{karnaugh-map}[4][4][4]
+%          \implicantcorner[0,2]
+%        \end{karnaugh-map}
+%      }
+%    \end{multicols}
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+\DeclareDocumentCommand{\implicantcorner}{O{0}} {%
+  % bail if outside environment karnaugh-map
+  \@karnaughmap@func@bailoutsideenvironment@{}
+  %
+  % make sure "\implicantcorner" only are used on 4x4 maps
+  \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@=44
+    % loop through specified sub maps
+    \foreach \map in {#1} {%
+      % make sure we don't try to draw on non existing sub maps
+      \ifnum\map<\@karnaughmap@var@mapsizez@
+        % loop through the four corners
+        \foreach \corner in {0,2,8,10} {%
+          % calculate corner's properties {[START]
+            \newcount\@karnaughmap@local@coordinate@\relax
+            \@karnaughmap@local@coordinate@=\map\relax
+            \multiply\@karnaughmap@local@coordinate@ by 16\relax
+            \advance\@karnaughmap@local@coordinate@ by \corner\relax
+            \newcommand{\@karnaughmap@local@mirrorx@}{0} % '1' or '-1' to mirror
+            \newcommand{\@karnaughmap@local@mirrory@}{0} % '1' or '-1' to mirror
+            \ifnum\corner=0 \renewcommand{\@karnaughmap@local@mirrorx@}{1}\renewcommand{\@karnaughmap@local@mirrory@}{1}\fi
+            \ifnum\corner=2 \renewcommand{\@karnaughmap@local@mirrorx@}{-1}\renewcommand{\@karnaughmap@local@mirrory@}{1}\fi
+            \ifnum\corner=8 \renewcommand{\@karnaughmap@local@mirrorx@}{1}\renewcommand{\@karnaughmap@local@mirrory@}{-1}\fi
+            \ifnum\corner=10 \renewcommand{\@karnaughmap@local@mirrorx@}{-1}\renewcommand{\@karnaughmap@local@mirrory@}{-1}\fi
+          % [END]}
+          % draw
+          % only fill marking when \@karnaughmap@var@bw@ = '0'
+          \ifnum0=\@karnaughmap@var@bw@
+            \fill[
+              sharp corners,
+              fill=\@karnaughmap@func@decimaltocolor@{\@karnaughmap@var@colorindex@},
+              fill opacity=0.25,
+            ]
+            ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinate@}.center)+(-.6*\@karnaughmap@local@mirrorx@,.6*\@karnaughmap@local@mirrory@)$)
+            --
+            ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinate@}.center)+(.3*\@karnaughmap@local@mirrorx@,.6*\@karnaughmap@local@mirrory@)$)
+            { [rounded corners=3pt] --
+            ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinate@}.center)+(.3*\@karnaughmap@local@mirrorx@,-.3*\@karnaughmap@local@mirrory@)$) }
+            --
+            ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinate@}.center)+(-.6*\@karnaughmap@local@mirrorx@,-.3*\@karnaughmap@local@mirrory@)$)
+            -- cycle;
+          \fi
+          \draw[
+            sharp corners,
+            draw opacity=1.0,
+          ]
+          ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinate@}.center)+(.3*\@karnaughmap@local@mirrorx@,.6*\@karnaughmap@local@mirrory@)$)
+          { [rounded corners=3pt] --
+          ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinate@}.center)+(.3*\@karnaughmap@local@mirrorx@,-.3*\@karnaughmap@local@mirrory@)$) }
+          --
+          ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinate@}.center)+(-.6*\@karnaughmap@local@mirrorx@,-.3*\@karnaughmap@local@mirrory@)$);
+        }
+      \else
+        \PackageWarning{karnaugh-map}{%
+          You can only draw on existing sub maps.
+          Ignoring instruction to draw on non existing sub map number \map%
+        }
+      \fi
+    }
+    % mark color as used
+    \advance\@karnaughmap@var@colorindex@ by 1\relax
+  \else
+    % print error if "\implicantcorner" are used on non 4x4 map
+    \PackageError{karnaugh-map}{%
+      \protect\implicantcorner\space can only be used on 4x4 maps%
+    }{%
+      You are trying to use \protect\implicantcorner\space on non 4x4 map.%
+    }
+  \fi
+}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \end{macro}
+%
+% \newpage
+% \section{Examples}
+%   \begin{multicols}{2}
+%     [Draw a karnaugh map for \small{$f(a,b,c,d,e,f) =$\\$\Sigma(0,1,2,3,8,13,17,20,22,28,33,32,30,19,40,35,49,42,34,10,60,54,62,51,52)$\\$+d(15,45,47)$}.]
+%     \begin{verbatim}
+%\begin{karnaugh-map}[4][4][4][$ba$][$dc$][$fe$]
+%  \minterms{0,1,2,3,8,13,17,20,22,28,
+%    33,32,30,19,40,35,49,42,34,10,60,
+%    54,62,51,52}
+%  \indeterminants{15,45,47}
+%  \autoterms[0]
+%  \implicantcorner[0,2]
+%  \implicant{1}{3}[0,1,2,3]
+%  \implicantedge{4}{12}{6}{14}[1,3]
+%  \implicant{13}{15}[0,2]
+%\end{karnaugh-map}
+%     \end{verbatim}
+%     \columnbreak
+%     \resizebox{\columnwidth}{!}{
+%       \begin{karnaugh-map}[4][4][4][$ba$][$dc$][$fe$]
+%         \minterms{0,1,2,3,8,13,17,20,22,28,33,32,30,19,40,35,49,42,34,10,60,54,62,51,52}
+%         \indeterminants{15,45,47}
+%         \autoterms[0]
+%         \implicantcorner[0,2]
+%         \implicant{1}{3}[0,1,2,3]
+%         \implicantedge{4}{12}{6}{14}[1,3]
+%         \implicant{13}{15}[0,2]
+%       \end{karnaugh-map}
+%     }
+%   \end{multicols}
+%
+%   \begin{multicols}{2}
+%     [Draw a karnaugh map for \small{$f(X_0,X_1) = \Pi(0,2,3)$} in black and white.]
+%     \begin{verbatim}
+%\begin{karnaugh-map}*[2][2][1][$X_0$][$X_1$]
+%  \maxterms{0,2,3}
+%  \autoterms[1]
+%  \implicant{1}{1}
+%\end{karnaugh-map}
+%     \end{verbatim}
+%     \columnbreak
+%     \resizebox{\columnwidth}{!}{
+%       \begin{karnaugh-map}*[2][2][1][$X_0$][$X_1$]
+%         \maxterms{0,2,3}
+%         \autoterms[1]
+%         \implicant{1}{1}
+%       \end{karnaugh-map}
+%     }
+%   \end{multicols}
+%
+% \section{Dependencies}
+% \begin{itemize}
+%   \item tikz
+%   \item xparse
+%   \item xstring
+% \end{itemize}
+%
+% \PrintIndex
+\endinput

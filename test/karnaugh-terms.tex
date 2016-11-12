@@ -1,0 +1,66 @@
+\documentclass{standalone}
+\usepackage{../karnaugh-map}
+\begin{document}
+  % fill all fields (autoterms)
+  \begin{karnaugh-map}[2][2][1]
+    \autoterms[-]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[2][4][1]
+    \autoterms[-]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][2][1]
+    \autoterms[-]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][1]
+    \autoterms[-]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][2]
+    \autoterms[-]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][4]
+    \autoterms[-]
+  \end{karnaugh-map}
+  % fill remaining after '\indeterminants' '\manualterms' '\maxterms' and '\minterms'
+  \begin{karnaugh-map}[2][2][1]
+    \manualterms{m}
+    \indeterminants{1}
+    \maxterms{2}
+    \minterms{3}
+    \autoterms[a]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[2][4][1]
+    \manualterms{m}
+    \indeterminants{1}
+    \maxterms{2}
+    \minterms{3}
+    \autoterms[a]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][2][1]
+    \manualterms{m}
+    \indeterminants{1}
+    \maxterms{2}
+    \minterms{3}
+    \autoterms[a]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][1]
+    \manualterms{m,m}
+    \indeterminants{2,3}
+    \maxterms{4,5}
+    \minterms{6,7}
+    \autoterms[a]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][2]
+    \manualterms{m,m,m,m}
+    \indeterminants{4,5,6,7}
+    \maxterms{8,9,10,11}
+    \minterms{12,13,14,15}
+    \autoterms[a]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][4]
+    \manualterms{m,m,m,m}
+    \indeterminants{4,5,6,7}
+    \maxterms{8,9,10,11}
+    \minterms{12,13,14,15}
+    \autoterms[a]
+  \end{karnaugh-map}
+\end{document}

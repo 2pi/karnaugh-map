@@ -1,0 +1,38 @@
+\documentclass{standalone}
+\usepackage{../karnaugh-map}
+\begin{document}
+  % test default(should only draw on 0th submap)
+  \begin{karnaugh-map}[4][4][1]
+    \implicantcorner
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][2]
+    \implicantcorner
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][4]
+    \implicantcorner
+  \end{karnaugh-map}
+  % draw on 0th and 2nd submaps(when possible)
+  \begin{karnaugh-map}[4][4][1]
+    \implicantcorner[0,2]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][2]
+    \implicantcorner[0,2]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][4]
+    \implicantcorner[0,2]
+  \end{karnaugh-map}
+  % draw multiple different implicants
+  \begin{karnaugh-map}[4][4][1]
+    \implicantcorner[0]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][2]
+    \implicantcorner[0]
+    \implicantcorner[1]
+  \end{karnaugh-map}
+  \begin{karnaugh-map}[4][4][4]
+    \implicantcorner[0]
+    \implicantcorner[1]
+    \implicantcorner[2]
+    \implicantcorner[3]
+  \end{karnaugh-map}
+\end{document}
