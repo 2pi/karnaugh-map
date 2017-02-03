@@ -1,0 +1,17 @@
+dist: trusty
+language: c++
+sudo: required
+before_install:
+- sudo apt-get update -qq
+- # install latex
+- sudo apt-get install --no-install-recommends --yes texlive-latex-base texlive-latex-extra pgf
+- # install dependecies for diff-pdf
+- sudo apt-get install --yes make automake g++ libpoppler-glib-dev poppler-utils wxgtk3.0-dev
+- # build diff-pdf
+- wget https://github.com/vslavik/diff-pdf/archive/master.tar.gz
+- tar xf master.tar.gz
+- pushd diff-pdf-master && ./bootstrap && ./configure && make && sudo make install && popd
+script:
+- pdflatex -halt-on-error -interaction=nonstopmode karnaugh-map.ins
+- pdflatex -halt-on-error -interaction=nonstopmode karnaugh-map.dtx
+- ./test.sh
