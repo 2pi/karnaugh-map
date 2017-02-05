@@ -509,7 +509,8 @@
 %
 %    \begin{tabularx}{\textwidth}{l X}
 %      \small{|\indeterminants|} & \\
-%      \small{\marg{cells}}   & \small{Comma separated list of cells to fill with ''-''}
+%      \small{\marg{cells}}   & \small{Comma separated list of cells to fill with ''-''} \\
+%      \small{\oarg{content}} & \small{Content to use for the indeterminate cells. Default: ''-''}
 %    \end{tabularx}
 %
 %    \textbf{Example:}
@@ -520,6 +521,13 @@
 %  \indeterminants{0,2}
 %\end{karnaugh-map}
 %    \end{verbatim}
+%
+%    Fill the top left and right cell with ''X''.
+%    \begin{verbatim}
+%\begin{karnaugh-map}
+%  \indeterminants{0,2}[X]
+%\end{karnaugh-map}
+%    \end{verbatim}
 % \iffalse code
 %    \begin{macrocode}
 % ^^A ##########################################################################
@@ -527,14 +535,14 @@
 % ^^A ####                              CODE                                ####
 % ^^A ##########################################################################
 % ^^A ##########################################################################
-\DeclareDocumentCommand{\indeterminants}{m} {%
+\DeclareDocumentCommand{\indeterminants}{m O{-}} {%
   % bail if outside environment karnaugh-map
   \@karnaughmap@func@bailoutsideenvironment@{}
   %
   \foreach \cell in {#1} {%
     % only write to cell if it is empty otherwise fail silently
     \IfSubStr{\@karnaughmap@var@usedcells@}{,\cell,}{}{%
-      \path (\@karnaughmap@func@decimaltobin@{\cell}) node {-};
+      \path (\@karnaughmap@func@decimaltobin@{\cell}) node {#2};
     }
   }
   % update \@karnaughmap@var@usedcells@
