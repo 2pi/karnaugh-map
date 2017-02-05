@@ -7,3 +7,5 @@
 !test/expected/karnaugh-*.pdf
 *.sty
 *.toc
+test/actual
+test/result
