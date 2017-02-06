@@ -1,14 +1,14 @@
 % \iffalse meta-comment
-% Copyright (C) 2015 by Mattias Jacobsson
-% This work, karnaugh-map, is written from the ground up by Mattias Jacobsson. However the general implementation idea is based on the work published on [TeX - LaTeX Stack Exchange](https://tex.stackexchange.com) by [Ignasi](https://tex.stackexchange.com/users/1952/ignasi) found [here](https://tex.stackexchange.com/a/140581) and [here](https://tex.stackexchange.com/a/36879) which is licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/). karnaugh-map is therefore licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/).
+% Copyright (C) 2015, 2016, 2017 Mattias Jacobsson and contributors
+% This work, karnaugh-map, is written from the ground up by Mattias Jacobsson. However the general implementation idea is based on the work published on [TeX - LaTeX Stack Exchange](https://tex.stackexchange.com) by [Ignasi](https://tex.stackexchange.com/users/1952/ignasi) found [here](https://tex.stackexchange.com/a/140581) and [here](https://tex.stackexchange.com/a/36879) which is licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/). karnaugh-map is therefore licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/). Contributors include [Oscar Gustafsson](https://github.com/oscargus).
 % \fi
 %
 % \iffalse
 %
 %<package>
 %<package>%%
-%<package>%% Copyright (C) 2015 by Mattias Jacobsson
-%<package>%% This work, karnaugh-map, is written from the ground up by Mattias Jacobsson. However the general implementation idea is based on the work published on [TeX - LaTeX Stack Exchange](https://tex.stackexchange.com) by [Ignasi](https://tex.stackexchange.com/users/1952/ignasi) found [here](https://tex.stackexchange.com/a/140581) and [here](https://tex.stackexchange.com/a/36879) which is licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/). karnaugh-map is therefore licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/).
+%<package>%% Copyright (C) 2015, 2016, 2017 Mattias Jacobsson and contributors
+%<package>%% This work, karnaugh-map, is written from the ground up by Mattias Jacobsson. However the general implementation idea is based on the work published on [TeX - LaTeX Stack Exchange](https://tex.stackexchange.com) by [Ignasi](https://tex.stackexchange.com/users/1952/ignasi) found [here](https://tex.stackexchange.com/a/140581) and [here](https://tex.stackexchange.com/a/36879) which is licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/). karnaugh-map is therefore licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/). Contributors include [Oscar Gustafsson](https://github.com/oscargus).
 %<package>%%
 %<package>
 %<package>\NeedsTeXFormat{LaTeX2e}
@@ -22,7 +22,7 @@
   \usepackage{float}% for documentation
   \usepackage{hyperref}% for documentation
   \setlength{\parindent}{0pt}
-  \setlength{\parskip}{0.7em}
+  \setlength{\parskip}{0.6em}
   \EnableCrossrefs
   \CodelineIndex
   \RecordChanges
@@ -531,14 +531,7 @@
   % bail if outside environment karnaugh-map
   \@karnaughmap@func@bailoutsideenvironment@{}
   %
-  \foreach \cell in {#1} {%
-    % only write to cell if it is empty otherwise fail silently
-    \IfSubStr{\@karnaughmap@var@usedcells@}{,\cell,}{}{%
-      \path (\@karnaughmap@func@decimaltobin@{\cell}) node {-};
-    }
-  }
-  % update \@karnaughmap@var@usedcells@
-  \expandafter\def\expandafter\@karnaughmap@var@usedcells@\expandafter{\@karnaughmap@var@usedcells@#1,}
+  \terms{#1}{-}
 }
 % ^^A ##########################################################################
 % ^^A ##########################################################################
@@ -549,7 +542,6 @@
 % \fi
 % \end{macro}
 %
-% \newpage
 % \begin{macro}{\manualterms}
 %    The |\manualterms| command fills the 0th cell with the first element in the argument, the 1st cell with the second element in the argument, and so on. If any of the cells already is filled, it is left as it was.
 %
@@ -609,6 +601,7 @@
 % \fi
 % \end{macro}
 %
+% \newpage
 % \begin{macro}{\maxterms}
 %    The |\maxterms| command fills the specified cells with ''0'' if they aren't already filled. Order of the cell numbers does not matter.
 %
@@ -638,14 +631,7 @@
   % bail if outside environment karnaugh-map
   \@karnaughmap@func@bailoutsideenvironment@{}
   %
-  \foreach \cell in {#1} {%
-    % only write to cell if it is empty otherwise fail silently
-    \IfSubStr{\@karnaughmap@var@usedcells@}{,\cell,}{}{%
-      \path (\@karnaughmap@func@decimaltobin@{\cell}) node {0};
-    }
-  }
-  % update \@karnaughmap@var@usedcells@
-  \expandafter\def\expandafter\@karnaughmap@var@usedcells@\expandafter{\@karnaughmap@var@usedcells@#1,}
+  \terms{#1}{0}
 }
 % ^^A ##########################################################################
 % ^^A ##########################################################################
@@ -685,10 +671,51 @@
   % bail if outside environment karnaugh-map
   \@karnaughmap@func@bailoutsideenvironment@{}
   %
+  \terms{#1}{1}
+}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                             /CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+%    \end{macrocode}
+% \fi
+% \end{macro}
+%
+% \begin{macro}{\terms}
+%    The |\terms| command fills the specified cells with the specified content if they aren't already filled. Order of the cell numbers does not matter.
+%
+%    \textbf{Usage:}
+%
+%    \begin{tabularx}{\textwidth}{l X}
+%      \small{|\terms|}  & \\
+%      \small{\marg{cells}} & \small{Comma separated list of cells to fill with content} \\
+%      \small{\marg{content}} & \small{Content to fill the cells with} \\
+%    \end{tabularx}
+%
+%    \textbf{Example:}
+%
+%    Fill the top left and right cell with ''X''.
+%    \begin{verbatim}
+%\begin{karnaugh-map}
+%  \terms{0,2}{X}
+%\end{karnaugh-map}
+%    \end{verbatim}
+% \iffalse code
+%    \begin{macrocode}
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+% ^^A ####                              CODE                                ####
+% ^^A ##########################################################################
+% ^^A ##########################################################################
+\DeclareDocumentCommand{\terms}{m m} {%
+  % bail if outside environment karnaugh-map
+  \@karnaughmap@func@bailoutsideenvironment@{}
+  %
   \foreach \cell in {#1} {%
     % only write to cell if it is empty otherwise fail silently
     \IfSubStr{\@karnaughmap@var@usedcells@}{,\cell,}{}{%
-      \path (\@karnaughmap@func@decimaltobin@{\cell}) node {1};
+      \path (\@karnaughmap@func@decimaltobin@{\cell}) node {#2};
     }
   }
   % update \@karnaughmap@var@usedcells@
@@ -1181,6 +1208,32 @@
 %         \maxterms{0,2,3}
 %         \autoterms[1]
 %         \implicant{1}{1}
+%       \end{karnaugh-map}
+%     }
+%   \end{multicols}
+%
+%   \newpage
+%   \begin{multicols}{2}
+%     [Draw a variable entered map.]
+%     \begin{verbatim}
+%\begin{karnaugh-map}[4][2][1][$ab$][$c$]
+%  \maxterms{0,2,4,5,6}
+%  \minterms{3}
+%  \terms{1}{$d$}
+%  \terms{7}{$d'$}
+%  \implicant{1}{3}
+%  \implicant{3}{7}
+%\end{karnaugh-map}
+%     \end{verbatim}
+%     \columnbreak
+%     \resizebox{\columnwidth}{!}{
+%       \begin{karnaugh-map}[4][2][1][$ab$][$c$]
+%         \maxterms{0,2,4,5,6}
+%         \minterms{3}
+%         \terms{1}{$d$}
+%         \terms{7}{$d'$}
+%         \implicant{1}{3}
+%         \implicant{3}{7}
 %       \end{karnaugh-map}
 %     }
 %   \end{multicols}
