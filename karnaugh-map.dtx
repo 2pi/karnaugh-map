@@ -1245,5 +1245,15 @@
 %   \item xstring
 % \end{itemize}
 %
+% \section{Miscellaneous}
+% \subsection*{Resizing}
+% The karnaugh maps produced with this package have a prespecified size which can not be changed. However you can resize the karnaugh map to your desired size. Resizing can be done using the |\resizebox| command from the graphicx package. Scaling the karnaugh map to fill the column width while preserving the aspect ratio can be done as follows.
+% \begin{verbatim}
+%\resizebox{\columnwidth}{!}{
+%  \begin{karnaugh-map}
+%  \end{karnaugh-map}
+%}
+% \end{verbatim}
+%
 % \PrintIndex
 \endinput
