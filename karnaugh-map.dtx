@@ -12,7 +12,7 @@
 %<package>%%
 %<package>
 %<package>\NeedsTeXFormat{LaTeX2e}
-%<package>\ProvidesPackage{karnaugh-map}[2015/10/09 v1.0 Draw Karnaugh Maps]
+%<package>\ProvidesPackage{karnaugh-map}[2017/02/20 v1.1 Draw Karnaugh Maps]
 %
 %<*driver>
   \documentclass{ltxdoc}
@@ -29,6 +29,7 @@
   \OnlyDescription
   \begin{document}
     \DocInput{karnaugh-map.dtx}
+    \PrintChanges
   \end{document}
 %</driver>
 % \fi
@@ -683,6 +684,7 @@
 % \end{macro}
 %
 % \begin{macro}{\terms}
+%    \changes{v1.1}{2017/02/06}{Support user specified term content and variable entered maps}
 %    The |\terms| command fills the specified cells with the specified content if they aren't already filled. Order of the cell numbers does not matter.
 %
 %    \textbf{Usage:}
@@ -1261,5 +1263,4 @@
 %
 % An example of errorious usage related to the \small{\marg{cells}} parameter in the terms related commands can result in multiple zeros, ones and other terms overlapping in the same cell in the outputted karnaugh map.
 %
-% \PrintIndex
 \endinput
