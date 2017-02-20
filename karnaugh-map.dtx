@@ -1245,6 +1245,7 @@
 %   \item xstring
 % \end{itemize}
 %
+% \newpage
 % \section{Miscellaneous}
 % \subsection*{Resizing}
 % The karnaugh maps produced with this package have a prespecified size which can not be changed. However you can resize the karnaugh map to your desired size. Resizing can be done using the |\resizebox| command from the graphicx package. Scaling the karnaugh map to fill the column width while preserving the aspect ratio can be done as follows.
@@ -1254,6 +1255,11 @@
 %  \end{karnaugh-map}
 %}
 % \end{verbatim}
+%
+% \subsection*{Comma separated lists}
+% Anywhere in this package where a comma separated list is used data should only be comma separated. Therefore a comma and space separeated list will for example \textit{not} work properly.
+%
+% An example of errorious usage related to the \small{\marg{cells}} parameter in the terms related commands can result in multiple zeros, ones and other terms overlapping in the same cell in the outputted karnaugh map.
 %
 % \PrintIndex
 \endinput
