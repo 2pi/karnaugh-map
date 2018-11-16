@@ -780,10 +780,10 @@
 %\end{karnaugh-map}
 %      \end{verbatim}
 %      \columnbreak
-%      \resizebox{\columnwidth}{!}{
+%      \resizebox{\columnwidth}{!}{%
 %        \begin{karnaugh-map}
 %          \implicant{5}{15}
-%        \end{karnaugh-map}
+%        \end{karnaugh-map}%
 %      }
 %    \end{multicols}
 %    \begin{multicols}{2}
@@ -794,10 +794,10 @@
 %\end{karnaugh-map}
 %      \end{verbatim}
 %      \columnbreak
-%      \resizebox{\columnwidth}{!}{
+%      \resizebox{\columnwidth}{!}{%
 %        \begin{karnaugh-map}[4][4][4]
 %          \implicant{0}{0}[0,1,2,3]
-%        \end{karnaugh-map}
+%        \end{karnaugh-map}%
 %      }
 %    \end{multicols}
 % \iffalse code
@@ -891,10 +891,10 @@
 %\end{karnaugh-map}
 %      \end{verbatim}
 %      \columnbreak
-%      \resizebox{\columnwidth}{!}{
+%      \resizebox{\columnwidth}{!}{%
 %        \begin{karnaugh-map}
 %          \implicantedge{4}{12}{6}{14}
-%        \end{karnaugh-map}
+%        \end{karnaugh-map}%
 %      }
 %    \end{multicols}
 % \iffalse code
@@ -1073,10 +1073,10 @@
 %\end{karnaugh-map}
 %      \end{verbatim}
 %      \columnbreak
-%      \resizebox{\columnwidth}{!}{
+%      \resizebox{\columnwidth}{!}{%
 %        \begin{karnaugh-map}[4][4][4]
 %          \implicantcorner[0,2]
-%        \end{karnaugh-map}
+%        \end{karnaugh-map}%
 %      }
 %    \end{multicols}
 % \iffalse code
@@ -1182,7 +1182,7 @@
 %\end{karnaugh-map}
 %     \end{verbatim}
 %     \columnbreak
-%     \resizebox{\columnwidth}{!}{
+%     \resizebox{\columnwidth}{!}{%
 %       \begin{karnaugh-map}[4][4][4][$ba$][$dc$][$fe$]
 %         \minterms{0,1,2,3,8,13,17,20,22,28,33,32,30,19,40,35,49,42,34,10,60,54,62,51,52}
 %         \indeterminants{15,45,47}
@@ -1191,7 +1191,7 @@
 %         \implicant{1}{3}[0,1,2,3]
 %         \implicantedge{4}{12}{6}{14}[1,3]
 %         \implicant{13}{15}[0,2]
-%       \end{karnaugh-map}
+%       \end{karnaugh-map}%
 %     }
 %   \end{multicols}
 %
@@ -1205,12 +1205,12 @@
 %\end{karnaugh-map}
 %     \end{verbatim}
 %     \columnbreak
-%     \resizebox{\columnwidth}{!}{
+%     \resizebox{\columnwidth}{!}{%
 %       \begin{karnaugh-map}*[2][2][1][$X_0$][$X_1$]
 %         \maxterms{0,2,3}
 %         \autoterms[1]
 %         \implicant{1}{1}
-%       \end{karnaugh-map}
+%       \end{karnaugh-map}%
 %     }
 %   \end{multicols}
 %
@@ -1228,7 +1228,7 @@
 %\end{karnaugh-map}
 %     \end{verbatim}
 %     \columnbreak
-%     \resizebox{\columnwidth}{!}{
+%     \resizebox{\columnwidth}{!}{%
 %       \begin{karnaugh-map}[4][2][1][$ba$][$c$]
 %         \maxterms{0,2,4,5,6}
 %         \minterms{3}
@@ -1236,7 +1236,7 @@
 %         \terms{7}{$d'$}
 %         \implicant{1}{3}
 %         \implicant{3}{7}
-%       \end{karnaugh-map}
+%       \end{karnaugh-map}%
 %     }
 %   \end{multicols}
 %
@@ -1252,9 +1252,9 @@
 % \subsection*{Resizing}
 % The karnaugh maps produced with this package have a prespecified size which can not be changed. However you can resize the karnaugh map to your desired size. Resizing can be done using the |\resizebox| command from the graphicx package. Scaling the karnaugh map to fill the column width while preserving the aspect ratio can be done as follows.
 % \begin{verbatim}
-%\resizebox{\columnwidth}{!}{
+%\resizebox{\columnwidth}{!}{%
 %  \begin{karnaugh-map}
-%  \end{karnaugh-map}
+%  \end{karnaugh-map}%
 %}
 % \end{verbatim}
 %
