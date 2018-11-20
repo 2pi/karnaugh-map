@@ -91,7 +91,9 @@
 %% Dependencies
 %%
 
-%% parsing arguments
+%% parsing arguments and options
+\RequirePackage{kvoptions}
+\RequirePackage{keyval}
 \RequirePackage{xparse}
 
 %% working with strings
@@ -200,6 +202,15 @@
 \newcommand{\@karnaughmap@var@mapsizey@}{0}
 \newcommand{\@karnaughmap@var@mapsizez@}{0}
 
+%% declare package and environment options
+%% package options
+\SetupKeyvalOptions{
+  family=@karnaughmap@option,
+  prefix=@karnaughmap@option@,
+}
+\ProcessKeyvalOptions*
+%% environment options
+
 %% render in black and white or color default to '0'(false/color)
 \newcommand{\@karnaughmap@var@bw@}{0}
 % ^^A ##########################################################################
@@ -238,6 +249,7 @@
 %
 %    \begin{tabularx}{\textwidth}{l X}
 %      \small{|\begin{karnaugh-map}|} & \\
+%      \small{\parg{options}}     & \small{See section \ref{sec:usage:options}. Default: ''''} \\
 %      \small{\meta{*}}           & \small{One asterisk for black and white implicants, non for colorized implicants} \\
 %      \small{\oarg{X size}}      & \small{Number of X-axis cells. Default: ''4''} \\
 %      \small{\oarg{Y size}}      & \small{Number of Y-axis cells. Default: ''4''} \\
@@ -271,15 +283,17 @@
 % ^^A ####                              CODE                                ####
 % ^^A ##########################################################################
 % ^^A ##########################################################################
-\NewDocumentEnvironment{karnaugh-map}{s O{4} O{4} O{1} O{$X_1X_0$} O{$X_3X_2$} O{$X_5X_4$}} {%
+\NewDocumentEnvironment{karnaugh-map}{D(){} s O{4} O{4} O{1} O{$X_1X_0$} O{$X_3X_2$} O{$X_5X_4$}} {%
   \begingroup
+    % parse environment options
+    \setkeys{karnaugh-map}{#1}%
     % store map size {[START]
-      \renewcommand{\@karnaughmap@var@mapsizex@}{#2}%
-      \renewcommand{\@karnaughmap@var@mapsizey@}{#3}%
-      \renewcommand{\@karnaughmap@var@mapsizez@}{#4}%
+      \renewcommand{\@karnaughmap@var@mapsizex@}{#3}%
+      \renewcommand{\@karnaughmap@var@mapsizey@}{#4}%
+      \renewcommand{\@karnaughmap@var@mapsizez@}{#5}%
     % [END]}
     % determinate if markings should be color or black and white
-    \IfBooleanTF{#1}{%
+    \IfBooleanTF{#2}{%
       % should be black and white
       \renewcommand{\@karnaughmap@var@bw@}{1}%
     }{%
@@ -381,24 +395,24 @@
       \fi
       % labels
       % for all dimensions
-      \node[above] at (\@karnaughmap@var@mapsizex@*0.5,\@karnaughmap@var@mapsizey@+0.9) {\small{#5}};
-      \node[left] at (-0.9,\@karnaughmap@var@mapsizey@*0.5) {\small{#6}};
+      \node[above] at (\@karnaughmap@var@mapsizex@*0.5,\@karnaughmap@var@mapsizey@+0.9) {\small{#6}};
+      \node[left] at (-0.9,\@karnaughmap@var@mapsizey@*0.5) {\small{#7}};
       % when there are 2 sub maps
       \ifnum\@karnaughmap@var@mapsizez@=2
-        \node[above] at (7,4.9) {\small{#5}};
+        \node[above] at (7,4.9) {\small{#6}};
         % extra sub maps labels
-        \node[below] at (2,-0.1) {\small{#7$=0$}};
-        \node[below] at (7,-0.1) {\small{#7$=1$}};
+        \node[below] at (2,-0.1) {\small{#8$=0$}};
+        \node[below] at (7,-0.1) {\small{#8$=1$}};
       \fi
       % when there are 4 sub maps
       \ifnum\@karnaughmap@var@mapsizez@=4
-        \node[above] at (7,4.9) {\small{#5}};
-        \node[left] at (-0.9,-3) {\small{#6}};
+        \node[above] at (7,4.9) {\small{#6}};
+        \node[left] at (-0.9,-3) {\small{#7}};
         % extra sub maps labels
-        \node[below] at (2,-0.1) {\small{#7$=00$}};
-        \node[below] at (7,-0.1) {\small{#7$=01$}};
-        \node[below] at (2,-5.1) {\small{#7$=10$}};
-        \node[below] at (7,-5.1) {\small{#7$=11$}};
+        \node[below] at (2,-0.1) {\small{#8$=00$}};
+        \node[below] at (7,-0.1) {\small{#8$=01$}};
+        \node[below] at (2,-5.1) {\small{#8$=10$}};
+        \node[below] at (7,-5.1) {\small{#8$=11$}};
       \fi
       % data
       \matrix[
@@ -1163,6 +1177,22 @@
 %    \end{macrocode}
 % \fi
 % \end{macro}
+%
+% \newpage
+% \subsection{Options}\label{sec:usage:options}
+% There are two available method for customizing the package, either globally or locally to one |karnaugh-map| environment. Multiple options are comma separated. The global options are defined when the package is loaded.
+%    \begin{verbatim}
+%\usepackage[options]{karnaugh-map}
+%\end{verbatim}
+%
+% The local options, which have precedence over the global options, are defined when a |karnaugh-map| environment is started.
+%
+%    \begin{verbatim}
+%\begin{karnaugh-map}(options)
+%\end{karnaugh-map}
+%\end{verbatim}
+%
+% \textbf{Available options are:}
 %
 % \newpage
 % \section{Examples}
