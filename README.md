@@ -13,6 +13,8 @@ Below is an example of a two variable karnaugh map.
     pdflatex karnaugh-map.dtx
 
 ## Dependencies
+* keyval
+* kvoptions
 * tikz
 * xparse
 * xstring
