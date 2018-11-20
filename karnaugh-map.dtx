@@ -208,8 +208,10 @@
   family=@karnaughmap@option,
   prefix=@karnaughmap@option@,
 }
+\DeclareStringOption[middle]{label}[middle]
 \ProcessKeyvalOptions*
 %% environment options
+\define@key{karnaugh-map}{label}[middle]{\renewcommand{\@karnaughmap@option@label}{#1}}
 
 %% render in black and white or color default to '0'(false/color)
 \newcommand{\@karnaughmap@var@bw@}{0}
@@ -380,40 +382,68 @@
       }%
     \fi
     \begin{tikzpicture}
-      % grid
-      % for all dimensions
-      \draw[color=black, ultra thin] (0,0) grid (\@karnaughmap@var@mapsizex@,\@karnaughmap@var@mapsizey@);
-      % when there are 2 sub maps
-      \ifnum\@karnaughmap@var@mapsizez@=2
-        \draw[color=black, ultra thin] (5,0) grid (9,4);
-      \fi
-      % when there are 4 sub maps
-      \ifnum\@karnaughmap@var@mapsizez@=4
-        \draw[color=black, ultra thin] (5,0) grid (9,4);
-        \draw[color=black, ultra thin] (0,-5) grid (4,-1);
-        \draw[color=black, ultra thin] (5,-5) grid (9,-1);
-      \fi
-      % labels
-      % for all dimensions
-      \node[above] at (\@karnaughmap@var@mapsizex@*0.5,\@karnaughmap@var@mapsizey@+0.9) {\small{#6}};
-      \node[left] at (-0.9,\@karnaughmap@var@mapsizey@*0.5) {\small{#7}};
-      % when there are 2 sub maps
-      \ifnum\@karnaughmap@var@mapsizez@=2
-        \node[above] at (7,4.9) {\small{#6}};
-        % extra sub maps labels
-        \node[below] at (2,-0.1) {\small{#8$=0$}};
-        \node[below] at (7,-0.1) {\small{#8$=1$}};
-      \fi
-      % when there are 4 sub maps
-      \ifnum\@karnaughmap@var@mapsizez@=4
-        \node[above] at (7,4.9) {\small{#6}};
-        \node[left] at (-0.9,-3) {\small{#7}};
-        % extra sub maps labels
-        \node[below] at (2,-0.1) {\small{#8$=00$}};
-        \node[below] at (7,-0.1) {\small{#8$=01$}};
-        \node[below] at (2,-5.1) {\small{#8$=10$}};
-        \node[below] at (7,-5.1) {\small{#8$=11$}};
-      \fi
+      % grid {[START]
+        % for all dimensions
+        \draw[color=black, ultra thin] (0,0) grid (\@karnaughmap@var@mapsizex@,\@karnaughmap@var@mapsizey@);
+        % when there are 2 sub maps
+        \ifnum\@karnaughmap@var@mapsizez@=2
+          \draw[color=black, ultra thin] (5,0) grid (9,4);
+        \fi
+        % when there are 4 sub maps
+        \ifnum\@karnaughmap@var@mapsizez@=4
+          \draw[color=black, ultra thin] (5,0) grid (9,4);
+          \draw[color=black, ultra thin] (0,-5) grid (4,-1);
+          \draw[color=black, ultra thin] (5,-5) grid (9,-1);
+        \fi
+      % [END]}
+      % labels {[START]
+        \IfStrEq{\@karnaughmap@option@label}{corner}{%
+          % if variables should be positioned at the corner
+          %
+          % for all dimensions
+          \draw[color=black, ultra thin] (0,\@karnaughmap@var@mapsizey@) --
+            node[pos=0.5, above right, anchor=south, rotate=-45] {\small{#6}}
+            node[pos=0.5, below left, anchor=north, rotate=-45] {\small{#7}}
+            ++(135:1);
+          % when there are 2 sub maps
+          \ifnum\@karnaughmap@var@mapsizez@=2
+            % extra sub map labels
+            \node[below] at (2,-0.1) {\small{#8$=0$}};
+            \node[below] at (7,-0.1) {\small{#8$=1$}};
+          \fi
+          % when there are 4 sub maps
+          \ifnum\@karnaughmap@var@mapsizez@=4
+            % extra sub map labels
+            \node[below] at (2,-0.1) {\small{#8$=00$}};
+            \node[below] at (7,-0.1) {\small{#8$=01$}};
+            \node[below] at (2,-5.1) {\small{#8$=10$}};
+            \node[below] at (7,-5.1) {\small{#8$=11$}};
+          \fi
+        }{%
+          % if variables should be positioned in the middle(top and side). Default.
+          %
+          % for all dimensions
+          \node[above] at (\@karnaughmap@var@mapsizex@*0.5,\@karnaughmap@var@mapsizey@+0.9) {\small{#6}};
+          \node[left] at (-0.9,\@karnaughmap@var@mapsizey@*0.5) {\small{#7}};
+          % when there are 2 sub maps
+          \ifnum\@karnaughmap@var@mapsizez@=2
+            \node[above] at (7,4.9) {\small{#6}};
+            % extra sub map labels
+            \node[below] at (2,-0.1) {\small{#8$=0$}};
+            \node[below] at (7,-0.1) {\small{#8$=1$}};
+          \fi
+          % when there are 4 sub maps
+          \ifnum\@karnaughmap@var@mapsizez@=4
+            \node[above] at (7,4.9) {\small{#6}};
+            \node[left] at (-0.9,-3) {\small{#7}};
+            % extra sub map labels
+            \node[below] at (2,-0.1) {\small{#8$=00$}};
+            \node[below] at (7,-0.1) {\small{#8$=01$}};
+            \node[below] at (2,-5.1) {\small{#8$=10$}};
+            \node[below] at (7,-5.1) {\small{#8$=11$}};
+          \fi
+        }
+      % [END]}
       % data
       \matrix[
         matrix of nodes,
@@ -1193,6 +1223,18 @@
 %\end{verbatim}
 %
 % \textbf{Available options are:}
+%
+% \texttt{label}: The input variable labels can either be positioned on the top and the side of the karnaugh-map(\texttt{label=middle}). Alternatively they can be positioned in the top--left corner(\texttt{label=corner}). Default: \texttt{middle}.
+%
+% \begin{figure}[H]
+%   \centering
+%   \resizebox{.75\textwidth}{!}{%
+%     \begin{karnaugh-map}
+%     \end{karnaugh-map}%
+%     \begin{karnaugh-map}(label=corner)
+%     \end{karnaugh-map}%
+%   }
+% \end{figure}
 %
 % \newpage
 % \section{Examples}
