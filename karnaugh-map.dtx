@@ -120,6 +120,28 @@
   }{}
 }
 
+%% convert decimal to line style
+\pgfkeys{%
+  /tikz/LineStyleA/.style={semithick,solid},
+  /tikz/LineStyleB/.style={semithick,dash dot dot},
+  /tikz/LineStyleC/.style={thin,double distance=0.8pt},
+  /tikz/LineStyleD/.style={ultra thick},
+  /tikz/LineStyleE/.style={semithick,dashed},
+  /tikz/LineStyleF/.style={semithick,densely dotted},
+}
+\newcommand{\@karnaughmap@func@decimaltolinestyle@}[1]{%
+  \if@karnaughmap@option@linestyles
+    \ifnum#1=1 LineStyleA\fi
+    \ifnum#1=2 LineStyleB\fi
+    \ifnum#1=3 LineStyleC\fi
+    \ifnum#1=5 LineStyleD\fi
+    \ifnum#1=6 LineStyleE\fi
+    \ifnum#1>6 LineStyleF\fi
+  \else
+    solid%
+  \fi
+}
+
 %% convert decimal to binary 6-bit
 \newcommand{\@karnaughmap@func@decimaltobin@}[1]{%
   \ifnum#1=0 000000\fi
@@ -229,10 +251,12 @@
 }
 \DeclareStringOption[middle]{label}[middle]
 \DeclareStringOption[]{implicantcolors}[]
+\DeclareBoolOption[false]{linestyles}
 \ProcessKeyvalOptions*
 %% environment options
 \define@key{karnaugh-map}{label}[middle]{\renewcommand{\@karnaughmap@option@label}{#1}}
 \define@key{karnaugh-map}{implicantcolors}[]{\renewcommand{\@karnaughmap@option@implicantcolors}{#1}}
+\define@key{karnaugh-map}{linestyles}[false]{\@karnaughmap@option@linestylestrue}
 
 %% render in black and white or color default to '0'(false/color)
 \newcommand{\@karnaughmap@var@bw@}{0}
@@ -1054,6 +1078,7 @@
         \draw[
           rounded corners=3pt,
           draw opacity=1.0,
+          \@karnaughmap@func@decimaltolinestyle@{\@karnaughmap@var@colorindex@},
         ] {
           ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@northwest@}.center)+(-0.3,0.3)$)
           rectangle
@@ -1242,6 +1267,7 @@
           \draw[
             sharp corners,
             draw opacity=1.0,
+            \@karnaughmap@func@decimaltolinestyle@{\@karnaughmap@var@colorindex@},
           ] {
             \@karnaughmap@local@bordercontent@%
           };
@@ -1344,6 +1370,7 @@
           \draw[
             sharp corners,
             draw opacity=1.0,
+            \@karnaughmap@func@decimaltolinestyle@{\@karnaughmap@var@colorindex@},
           ]
           ($(\@karnaughmap@func@decimaltobin@{\@karnaughmap@local@coordinate@}.center)+(.3*\@karnaughmap@local@mirrorx@,.6*\@karnaughmap@local@mirrory@)$)
           { [rounded corners=3pt] --
@@ -1418,6 +1445,26 @@
 %     \begin{karnaugh-map}(label=corner)
 %     \end{karnaugh-map}%
 %   }
+% \end{figure}
+%
+% \texttt{linestyles}: The implicants can be drawned using different line styles to help visually differentiate them further. This is especially useful when printing in black and white or if colorblind accessibility is wanted.
+%
+% \begin{figure}[H]
+%   \centering
+%   \begin{karnaugh-map}(linestyles)[2][2][1][$X_0$][$X_1$]
+%     \minterms{1,2}
+%     \autoterms[0]
+%     \implicant{1}{1}
+%     \implicant{2}{2}
+%     \implicant{1}{3}
+%   \end{karnaugh-map}
+%   \begin{karnaugh-map}(linestyles)*[2][2][1][$X_0$][$X_1$]
+%     \minterms{1,2}
+%     \autoterms[0]
+%     \implicant{1}{1}
+%     \implicant{2}{2}
+%     \implicant{1}{3}
+%   \end{karnaugh-map}
 % \end{figure}
 %
 % \newpage
