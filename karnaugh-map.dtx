@@ -331,272 +331,272 @@
   \endgroup
 }
 \DeclareDocumentCommand{\@karnaughmap@func@karnaughstart@}{oooooo} {%
-    % parse label args {[START]
-      % try to maintain backwards compatibility with v1 while enabling users to separatly
-      % specify each input label variable
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=221
-        % no difference
+  % parse label args {[START]
+    % try to maintain backwards compatibility with v1 while enabling users to separatly
+    % specify each input label variable
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=221
+      % no difference
+      \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
+      \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
+      \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelA@}%
+      \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelB@}%
+      \renewcommand{\@karnaughmap@var@labeltype@}{2}%
+    \fi
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=241
+      \IfValueT{#1}{\IfValueT{#2}{\IfValueF{#3}{%
+        % API v1
+        \renewcommand{\@karnaughmap@var@labelX@}{#1}%
+        \renewcommand{\@karnaughmap@var@labelY@}{#2}%
+        \renewcommand{\@karnaughmap@var@labeltype@}{1}%
+      }}}%
+      \ifnum\@karnaughmap@var@labeltype@=0
+        % API v2
         \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
         \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
+        \IfValueT{#3}{\renewcommand{\@karnaughmap@var@labelC@}{#3}}%
         \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelA@}%
-        \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelB@}%
+        \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelC@\@karnaughmap@var@labelB@}%
         \renewcommand{\@karnaughmap@var@labeltype@}{2}%
       \fi
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=241
-        \IfValueT{#1}{\IfValueT{#2}{\IfValueF{#3}{%
-          % API v1
-          \renewcommand{\@karnaughmap@var@labelX@}{#1}%
-          \renewcommand{\@karnaughmap@var@labelY@}{#2}%
-          \renewcommand{\@karnaughmap@var@labeltype@}{1}%
-        }}}%
-        \ifnum\@karnaughmap@var@labeltype@=0
-          % API v2
-          \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
-          \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
-          \IfValueT{#3}{\renewcommand{\@karnaughmap@var@labelC@}{#3}}%
-          \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelA@}%
-          \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelC@\@karnaughmap@var@labelB@}%
-          \renewcommand{\@karnaughmap@var@labeltype@}{2}%
-        \fi
+    \fi
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=421
+      \IfValueT{#1}{\IfValueT{#2}{\IfValueF{#3}{%
+        % API v1
+        \renewcommand{\@karnaughmap@var@labelX@}{#1}%
+        \renewcommand{\@karnaughmap@var@labelY@}{#2}%
+        \renewcommand{\@karnaughmap@var@labeltype@}{1}%
+      }}}%
+      \ifnum\@karnaughmap@var@labeltype@=0
+        % API v2
+        \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
+        \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
+        \IfValueT{#3}{\renewcommand{\@karnaughmap@var@labelC@}{#3}}%
+        \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelB@\@karnaughmap@var@labelA@}%
+        \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelC@}%
+        \renewcommand{\@karnaughmap@var@labeltype@}{2}%
       \fi
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=421
-        \IfValueT{#1}{\IfValueT{#2}{\IfValueF{#3}{%
-          % API v1
-          \renewcommand{\@karnaughmap@var@labelX@}{#1}%
-          \renewcommand{\@karnaughmap@var@labelY@}{#2}%
-          \renewcommand{\@karnaughmap@var@labeltype@}{1}%
-        }}}%
-        \ifnum\@karnaughmap@var@labeltype@=0
-          % API v2
-          \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
-          \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
-          \IfValueT{#3}{\renewcommand{\@karnaughmap@var@labelC@}{#3}}%
-          \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelB@\@karnaughmap@var@labelA@}%
-          \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelC@}%
-          \renewcommand{\@karnaughmap@var@labeltype@}{2}%
-        \fi
+    \fi
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=441
+      \IfValueT{#1}{\IfValueT{#2}{\IfValueF{#3}{%
+        % API v1
+        \renewcommand{\@karnaughmap@var@labelX@}{#1}%
+        \renewcommand{\@karnaughmap@var@labelY@}{#2}%
+        \renewcommand{\@karnaughmap@var@labeltype@}{1}%
+      }}}%
+      \ifnum\@karnaughmap@var@labeltype@=0
+        % API v2
+        \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
+        \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
+        \IfValueT{#3}{\renewcommand{\@karnaughmap@var@labelC@}{#3}}%
+        \IfValueT{#4}{\renewcommand{\@karnaughmap@var@labelD@}{#4}}%
+        \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelB@\@karnaughmap@var@labelA@}%
+        \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelD@\@karnaughmap@var@labelC@}%
+        \renewcommand{\@karnaughmap@var@labeltype@}{2}%
       \fi
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=441
-        \IfValueT{#1}{\IfValueT{#2}{\IfValueF{#3}{%
-          % API v1
-          \renewcommand{\@karnaughmap@var@labelX@}{#1}%
-          \renewcommand{\@karnaughmap@var@labelY@}{#2}%
-          \renewcommand{\@karnaughmap@var@labeltype@}{1}%
-        }}}%
-        \ifnum\@karnaughmap@var@labeltype@=0
-          % API v2
-          \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
-          \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
-          \IfValueT{#3}{\renewcommand{\@karnaughmap@var@labelC@}{#3}}%
-          \IfValueT{#4}{\renewcommand{\@karnaughmap@var@labelD@}{#4}}%
-          \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelB@\@karnaughmap@var@labelA@}%
-          \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelD@\@karnaughmap@var@labelC@}%
-          \renewcommand{\@karnaughmap@var@labeltype@}{2}%
-        \fi
+    \fi
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=442
+      \IfValueT{#1}{\IfValueT{#2}{\IfValueT{#3}{\IfValueF{#4}{%
+        % API v1
+        \renewcommand{\@karnaughmap@var@labelX@}{#1}%
+        \renewcommand{\@karnaughmap@var@labelY@}{#2}%
+        \renewcommand{\@karnaughmap@var@labelZ@}{#3}%
+        \renewcommand{\@karnaughmap@var@labeltype@}{1}%
+      }}}}%
+      \ifnum\@karnaughmap@var@labeltype@=0
+        % API v2
+        \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
+        \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
+        \IfValueT{#3}{\renewcommand{\@karnaughmap@var@labelC@}{#3}}%
+        \IfValueT{#4}{\renewcommand{\@karnaughmap@var@labelD@}{#4}}%
+        \IfValueT{#5}{\renewcommand{\@karnaughmap@var@labelE@}{#5}}%
+        \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelB@\@karnaughmap@var@labelA@}%
+        \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelD@\@karnaughmap@var@labelC@}%
+        \renewcommand{\@karnaughmap@var@labelZ@}{\@karnaughmap@var@labelE@}%
+        \renewcommand{\@karnaughmap@var@labeltype@}{2}%
       \fi
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=442
-        \IfValueT{#1}{\IfValueT{#2}{\IfValueT{#3}{\IfValueF{#4}{%
-          % API v1
-          \renewcommand{\@karnaughmap@var@labelX@}{#1}%
-          \renewcommand{\@karnaughmap@var@labelY@}{#2}%
-          \renewcommand{\@karnaughmap@var@labelZ@}{#3}%
-          \renewcommand{\@karnaughmap@var@labeltype@}{1}%
-        }}}}%
-        \ifnum\@karnaughmap@var@labeltype@=0
-          % API v2
-          \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
-          \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
-          \IfValueT{#3}{\renewcommand{\@karnaughmap@var@labelC@}{#3}}%
-          \IfValueT{#4}{\renewcommand{\@karnaughmap@var@labelD@}{#4}}%
-          \IfValueT{#5}{\renewcommand{\@karnaughmap@var@labelE@}{#5}}%
-          \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelB@\@karnaughmap@var@labelA@}%
-          \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelD@\@karnaughmap@var@labelC@}%
-          \renewcommand{\@karnaughmap@var@labelZ@}{\@karnaughmap@var@labelE@}%
-          \renewcommand{\@karnaughmap@var@labeltype@}{2}%
-        \fi
+    \fi
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=444
+      \IfValueT{#1}{\IfValueT{#2}{\IfValueT{#3}{\IfValueF{#4}{%
+        % API v1
+        \renewcommand{\@karnaughmap@var@labelX@}{#1}%
+        \renewcommand{\@karnaughmap@var@labelY@}{#2}%
+        \renewcommand{\@karnaughmap@var@labelZ@}{#3}%
+        \renewcommand{\@karnaughmap@var@labeltype@}{1}%
+      }}}}%
+      \ifnum\@karnaughmap@var@labeltype@=0
+        % API v2
+        \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
+        \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
+        \IfValueT{#3}{\renewcommand{\@karnaughmap@var@labelC@}{#3}}%
+        \IfValueT{#4}{\renewcommand{\@karnaughmap@var@labelD@}{#4}}%
+        \IfValueT{#5}{\renewcommand{\@karnaughmap@var@labelE@}{#5}}%
+        \IfValueT{#6}{\renewcommand{\@karnaughmap@var@labelF@}{#6}}%
+        \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelB@\@karnaughmap@var@labelA@}%
+        \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelD@\@karnaughmap@var@labelC@}%
+        \renewcommand{\@karnaughmap@var@labelZ@}{\@karnaughmap@var@labelF@\@karnaughmap@var@labelE@}%
+        \renewcommand{\@karnaughmap@var@labeltype@}{2}%
       \fi
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=444
-        \IfValueT{#1}{\IfValueT{#2}{\IfValueT{#3}{\IfValueF{#4}{%
-          % API v1
-          \renewcommand{\@karnaughmap@var@labelX@}{#1}%
-          \renewcommand{\@karnaughmap@var@labelY@}{#2}%
-          \renewcommand{\@karnaughmap@var@labelZ@}{#3}%
-          \renewcommand{\@karnaughmap@var@labeltype@}{1}%
-        }}}}%
-        \ifnum\@karnaughmap@var@labeltype@=0
-          % API v2
-          \IfValueT{#1}{\renewcommand{\@karnaughmap@var@labelA@}{#1}}%
-          \IfValueT{#2}{\renewcommand{\@karnaughmap@var@labelB@}{#2}}%
-          \IfValueT{#3}{\renewcommand{\@karnaughmap@var@labelC@}{#3}}%
-          \IfValueT{#4}{\renewcommand{\@karnaughmap@var@labelD@}{#4}}%
-          \IfValueT{#5}{\renewcommand{\@karnaughmap@var@labelE@}{#5}}%
-          \IfValueT{#6}{\renewcommand{\@karnaughmap@var@labelF@}{#6}}%
-          \renewcommand{\@karnaughmap@var@labelX@}{\@karnaughmap@var@labelB@\@karnaughmap@var@labelA@}%
-          \renewcommand{\@karnaughmap@var@labelY@}{\@karnaughmap@var@labelD@\@karnaughmap@var@labelC@}%
-          \renewcommand{\@karnaughmap@var@labelZ@}{\@karnaughmap@var@labelF@\@karnaughmap@var@labelE@}%
-          \renewcommand{\@karnaughmap@var@labeltype@}{2}%
-        \fi
-      \fi
-      % warn when using API v1
-      \ifnum\@karnaughmap@var@labeltype@=1
-        \PackageWarning{karnaugh-map}{%
-          The API for specifying variable labels have been updated. You are currently using the old API(v1).
-          In the new API each variable label is specified separately. See the documentation for more details.
-          Backward compatibility may disappear in a future release.%
-        }%
-      \fi
-    % [END]}
-    %
-    % find matching matrix template and alignment parameters {[START]
-      \newcommand{\@karnaughmap@local@matrixtemplate@}{0}% '0' is considered as missing matrix template
-      \newcommand{\@karnaughmap@local@maprealignmentx@}{0}%
-      \newcommand{\@karnaughmap@local@maprealignmenty@}{0}%
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=221
-        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
-                       \&                       0 \&                       1 \& \phantom{0} \\
-                     0 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \&             \\
-                     1 \& |(000010)|  \phantom{0} \& |(000011)|  \phantom{0} \&             \\
-          \phantom{0}  \&                         \&                         \&             \\
-        }%
-      \fi
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=241
-        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
-                       \&                       0 \&                       1 \& \phantom{00} \\
-                    00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \&              \\
-                    01 \& |(000010)|  \phantom{0} \& |(000011)|  \phantom{0} \&              \\
-                    11 \& |(000110)|  \phantom{0} \& |(000111)|  \phantom{0} \&              \\
-                    10 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \&              \\
-          \phantom{00} \&                         \&                         \&              \\
-        }%
-      \fi
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=421
-        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
-                       \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
-                    0  \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \\
-                    1  \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \\
-          \phantom{00} \&                         \&                         \&                         \&                         \&              \\
-        }%
-      \fi
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=441
-        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
-                       \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
-                    00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \\
-                    01 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \\
-                    11 \& |(001100)|  \phantom{0} \& |(001101)|  \phantom{0} \& |(001111)|  \phantom{0} \& |(001110)|  \phantom{0} \&              \\
-                    10 \& |(001000)|  \phantom{0} \& |(001001)|  \phantom{0} \& |(001011)|  \phantom{0} \& |(001010)|  \phantom{0} \&              \\
-          \phantom{00} \&                         \&                         \&                         \&                         \&              \\
-        }%
-      \fi
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=442
-        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
-                       \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
-                    00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \& |(010000)|  \phantom{0} \& |(010001)|  \phantom{0} \& |(010011)|  \phantom{0} \& |(010010)|  \phantom{0} \&              \\
-                    01 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \& |(010100)|  \phantom{0} \& |(010101)|  \phantom{0} \& |(010111)|  \phantom{0} \& |(010110)|  \phantom{0} \&              \\
-                    11 \& |(001100)|  \phantom{0} \& |(001101)|  \phantom{0} \& |(001111)|  \phantom{0} \& |(001110)|  \phantom{0} \&              \& |(011100)|  \phantom{0} \& |(011101)|  \phantom{0} \& |(011111)|  \phantom{0} \& |(011110)|  \phantom{0} \&              \\
-                    10 \& |(001000)|  \phantom{0} \& |(001001)|  \phantom{0} \& |(001011)|  \phantom{0} \& |(001010)|  \phantom{0} \&              \& |(011000)|  \phantom{0} \& |(011001)|  \phantom{0} \& |(011011)|  \phantom{0} \& |(011010)|  \phantom{0} \&              \\
-          \phantom{00} \&                         \&                         \&                         \&                         \&              \&                         \&                         \&                         \&                         \&              \\
-        }%
-        \renewcommand{\@karnaughmap@local@maprealignmentx@}{2.5}%
-      \fi
-      \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=444
-        \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
-                       \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
-                    00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \& |(010000)|  \phantom{0} \& |(010001)|  \phantom{0} \& |(010011)|  \phantom{0} \& |(010010)|  \phantom{0} \&              \\
-                    01 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \& |(010100)|  \phantom{0} \& |(010101)|  \phantom{0} \& |(010111)|  \phantom{0} \& |(010110)|  \phantom{0} \&              \\
-                    11 \& |(001100)|  \phantom{0} \& |(001101)|  \phantom{0} \& |(001111)|  \phantom{0} \& |(001110)|  \phantom{0} \&              \& |(011100)|  \phantom{0} \& |(011101)|  \phantom{0} \& |(011111)|  \phantom{0} \& |(011110)|  \phantom{0} \&              \\
-                    10 \& |(001000)|  \phantom{0} \& |(001001)|  \phantom{0} \& |(001011)|  \phantom{0} \& |(001010)|  \phantom{0} \&              \& |(011000)|  \phantom{0} \& |(011001)|  \phantom{0} \& |(011011)|  \phantom{0} \& |(011010)|  \phantom{0} \&              \\
-          \phantom{00} \&                         \&                         \&                         \&                         \&              \&                         \&                         \&                         \&                         \&              \\
-                    00 \& |(100000)|  \phantom{0} \& |(100001)|  \phantom{0} \& |(100011)|  \phantom{0} \& |(100010)|  \phantom{0} \&              \& |(110000)|  \phantom{0} \& |(110001)|  \phantom{0} \& |(110011)|  \phantom{0} \& |(110010)|  \phantom{0} \&              \\
-                    01 \& |(100100)|  \phantom{0} \& |(100101)|  \phantom{0} \& |(100111)|  \phantom{0} \& |(100110)|  \phantom{0} \&              \& |(110100)|  \phantom{0} \& |(110101)|  \phantom{0} \& |(110111)|  \phantom{0} \& |(110110)|  \phantom{0} \&              \\
-                    11 \& |(101100)|  \phantom{0} \& |(101101)|  \phantom{0} \& |(101111)|  \phantom{0} \& |(101110)|  \phantom{0} \&              \& |(111100)|  \phantom{0} \& |(111101)|  \phantom{0} \& |(111111)|  \phantom{0} \& |(111110)|  \phantom{0} \&              \\
-                    10 \& |(101000)|  \phantom{0} \& |(101001)|  \phantom{0} \& |(101011)|  \phantom{0} \& |(101010)|  \phantom{0} \&              \& |(111000)|  \phantom{0} \& |(111001)|  \phantom{0} \& |(111011)|  \phantom{0} \& |(111010)|  \phantom{0} \&              \\
-          \phantom{00} \&                         \&                         \&                         \&                         \&              \&                         \&                         \&                         \&                         \&              \\
-        }%
-        \renewcommand{\@karnaughmap@local@maprealignmentx@}{2.5}%
-        \renewcommand{\@karnaughmap@local@maprealignmenty@}{-2.5}%
-      \fi
-    % [END]}
-    % test if a matrix template is found or not(aka "\@karnaughmap@local@matrixtemplate@" equals to '0')
-    \ifnum0=\@karnaughmap@local@matrixtemplate@
-      % print error if no template could be found
-      \PackageError{karnaugh-map}{%
-        Can not find a template fitting your specification (\@karnaughmap@var@mapsizex@\space x \@karnaughmap@var@mapsizey@\space x \@karnaughmap@var@mapsizez@)%
-      }{%
-        Existing templates have the following dimensions: 2x2x1, 2x4x1, 4x2x1, 4x4x1, 4x4x2, and 4x4x4.
+    \fi
+    % warn when using API v1
+    \ifnum\@karnaughmap@var@labeltype@=1
+      \PackageWarning{karnaugh-map}{%
+        The API for specifying variable labels have been updated. You are currently using the old API(v1).
+        In the new API each variable label is specified separately. See the documentation for more details.
+        Backward compatibility may disappear in a future release.%
       }%
     \fi
-    \begin{tikzpicture}
-      % grid {[START]
+  % [END]}
+  %
+  % find matching matrix template and alignment parameters {[START]
+    \newcommand{\@karnaughmap@local@matrixtemplate@}{0}% '0' is considered as missing matrix template
+    \newcommand{\@karnaughmap@local@maprealignmentx@}{0}%
+    \newcommand{\@karnaughmap@local@maprealignmenty@}{0}%
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=221
+      \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                     \&                       0 \&                       1 \& \phantom{0} \\
+                   0 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \&             \\
+                   1 \& |(000010)|  \phantom{0} \& |(000011)|  \phantom{0} \&             \\
+        \phantom{0}  \&                         \&                         \&             \\
+      }%
+    \fi
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=241
+      \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                     \&                       0 \&                       1 \& \phantom{00} \\
+                  00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \&              \\
+                  01 \& |(000010)|  \phantom{0} \& |(000011)|  \phantom{0} \&              \\
+                  11 \& |(000110)|  \phantom{0} \& |(000111)|  \phantom{0} \&              \\
+                  10 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \&              \\
+        \phantom{00} \&                         \&                         \&              \\
+      }%
+    \fi
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=421
+      \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                     \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
+                  0  \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \\
+                  1  \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \\
+        \phantom{00} \&                         \&                         \&                         \&                         \&              \\
+      }%
+    \fi
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=441
+      \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                     \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
+                  00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \\
+                  01 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \\
+                  11 \& |(001100)|  \phantom{0} \& |(001101)|  \phantom{0} \& |(001111)|  \phantom{0} \& |(001110)|  \phantom{0} \&              \\
+                  10 \& |(001000)|  \phantom{0} \& |(001001)|  \phantom{0} \& |(001011)|  \phantom{0} \& |(001010)|  \phantom{0} \&              \\
+        \phantom{00} \&                         \&                         \&                         \&                         \&              \\
+      }%
+    \fi
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=442
+      \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                     \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
+                  00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \& |(010000)|  \phantom{0} \& |(010001)|  \phantom{0} \& |(010011)|  \phantom{0} \& |(010010)|  \phantom{0} \&              \\
+                  01 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \& |(010100)|  \phantom{0} \& |(010101)|  \phantom{0} \& |(010111)|  \phantom{0} \& |(010110)|  \phantom{0} \&              \\
+                  11 \& |(001100)|  \phantom{0} \& |(001101)|  \phantom{0} \& |(001111)|  \phantom{0} \& |(001110)|  \phantom{0} \&              \& |(011100)|  \phantom{0} \& |(011101)|  \phantom{0} \& |(011111)|  \phantom{0} \& |(011110)|  \phantom{0} \&              \\
+                  10 \& |(001000)|  \phantom{0} \& |(001001)|  \phantom{0} \& |(001011)|  \phantom{0} \& |(001010)|  \phantom{0} \&              \& |(011000)|  \phantom{0} \& |(011001)|  \phantom{0} \& |(011011)|  \phantom{0} \& |(011010)|  \phantom{0} \&              \\
+        \phantom{00} \&                         \&                         \&                         \&                         \&              \&                         \&                         \&                         \&                         \&              \\
+      }%
+      \renewcommand{\@karnaughmap@local@maprealignmentx@}{2.5}%
+    \fi
+    \ifnum\@karnaughmap@var@mapsizex@\@karnaughmap@var@mapsizey@\@karnaughmap@var@mapsizez@=444
+      \renewcommand{\@karnaughmap@local@matrixtemplate@}{%
+                     \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \&                      00 \&                      01 \&                      11 \&                      10 \& \phantom{00} \\
+                  00 \& |(000000)|  \phantom{0} \& |(000001)|  \phantom{0} \& |(000011)|  \phantom{0} \& |(000010)|  \phantom{0} \&              \& |(010000)|  \phantom{0} \& |(010001)|  \phantom{0} \& |(010011)|  \phantom{0} \& |(010010)|  \phantom{0} \&              \\
+                  01 \& |(000100)|  \phantom{0} \& |(000101)|  \phantom{0} \& |(000111)|  \phantom{0} \& |(000110)|  \phantom{0} \&              \& |(010100)|  \phantom{0} \& |(010101)|  \phantom{0} \& |(010111)|  \phantom{0} \& |(010110)|  \phantom{0} \&              \\
+                  11 \& |(001100)|  \phantom{0} \& |(001101)|  \phantom{0} \& |(001111)|  \phantom{0} \& |(001110)|  \phantom{0} \&              \& |(011100)|  \phantom{0} \& |(011101)|  \phantom{0} \& |(011111)|  \phantom{0} \& |(011110)|  \phantom{0} \&              \\
+                  10 \& |(001000)|  \phantom{0} \& |(001001)|  \phantom{0} \& |(001011)|  \phantom{0} \& |(001010)|  \phantom{0} \&              \& |(011000)|  \phantom{0} \& |(011001)|  \phantom{0} \& |(011011)|  \phantom{0} \& |(011010)|  \phantom{0} \&              \\
+        \phantom{00} \&                         \&                         \&                         \&                         \&              \&                         \&                         \&                         \&                         \&              \\
+                  00 \& |(100000)|  \phantom{0} \& |(100001)|  \phantom{0} \& |(100011)|  \phantom{0} \& |(100010)|  \phantom{0} \&              \& |(110000)|  \phantom{0} \& |(110001)|  \phantom{0} \& |(110011)|  \phantom{0} \& |(110010)|  \phantom{0} \&              \\
+                  01 \& |(100100)|  \phantom{0} \& |(100101)|  \phantom{0} \& |(100111)|  \phantom{0} \& |(100110)|  \phantom{0} \&              \& |(110100)|  \phantom{0} \& |(110101)|  \phantom{0} \& |(110111)|  \phantom{0} \& |(110110)|  \phantom{0} \&              \\
+                  11 \& |(101100)|  \phantom{0} \& |(101101)|  \phantom{0} \& |(101111)|  \phantom{0} \& |(101110)|  \phantom{0} \&              \& |(111100)|  \phantom{0} \& |(111101)|  \phantom{0} \& |(111111)|  \phantom{0} \& |(111110)|  \phantom{0} \&              \\
+                  10 \& |(101000)|  \phantom{0} \& |(101001)|  \phantom{0} \& |(101011)|  \phantom{0} \& |(101010)|  \phantom{0} \&              \& |(111000)|  \phantom{0} \& |(111001)|  \phantom{0} \& |(111011)|  \phantom{0} \& |(111010)|  \phantom{0} \&              \\
+        \phantom{00} \&                         \&                         \&                         \&                         \&              \&                         \&                         \&                         \&                         \&              \\
+      }%
+      \renewcommand{\@karnaughmap@local@maprealignmentx@}{2.5}%
+      \renewcommand{\@karnaughmap@local@maprealignmenty@}{-2.5}%
+    \fi
+  % [END]}
+  % test if a matrix template is found or not(aka "\@karnaughmap@local@matrixtemplate@" equals to '0')
+  \ifnum0=\@karnaughmap@local@matrixtemplate@
+    % print error if no template could be found
+    \PackageError{karnaugh-map}{%
+      Can not find a template fitting your specification (\@karnaughmap@var@mapsizex@\space x \@karnaughmap@var@mapsizey@\space x \@karnaughmap@var@mapsizez@)%
+    }{%
+      Existing templates have the following dimensions: 2x2x1, 2x4x1, 4x2x1, 4x4x1, 4x4x2, and 4x4x4.
+    }%
+  \fi
+  \begin{tikzpicture}
+    % grid {[START]
+      % for all dimensions
+      \draw[color=black, ultra thin] (0,0) grid (\@karnaughmap@var@mapsizex@,\@karnaughmap@var@mapsizey@);
+      % when there are 2 sub maps
+      \ifnum\@karnaughmap@var@mapsizez@=2
+        \draw[color=black, ultra thin] (5,0) grid (9,4);
+      \fi
+      % when there are 4 sub maps
+      \ifnum\@karnaughmap@var@mapsizez@=4
+        \draw[color=black, ultra thin] (5,0) grid (9,4);
+        \draw[color=black, ultra thin] (0,-5) grid (4,-1);
+        \draw[color=black, ultra thin] (5,-5) grid (9,-1);
+      \fi
+    % [END]}
+    % labels {[START]
+      \IfStrEq{\@karnaughmap@option@label}{corner}{%
+        % if variables should be positioned at the corner
+        %
         % for all dimensions
-        \draw[color=black, ultra thin] (0,0) grid (\@karnaughmap@var@mapsizex@,\@karnaughmap@var@mapsizey@);
+        \draw[color=black, ultra thin] (0,\@karnaughmap@var@mapsizey@) --
+          node[pos=0.5, above right, anchor=south, rotate=-45] {\small{\@karnaughmap@var@labelX@}}
+          node[pos=0.5, below left, anchor=north, rotate=-45] {\small{\@karnaughmap@var@labelY@}}
+          ++(135:1);
         % when there are 2 sub maps
         \ifnum\@karnaughmap@var@mapsizez@=2
-          \draw[color=black, ultra thin] (5,0) grid (9,4);
+          % extra sub map labels
+          \node[below] at (2,-0.1) {\small{\@karnaughmap@var@labelZ@$=0$}};
+          \node[below] at (7,-0.1) {\small{\@karnaughmap@var@labelZ@$=1$}};
         \fi
         % when there are 4 sub maps
         \ifnum\@karnaughmap@var@mapsizez@=4
-          \draw[color=black, ultra thin] (5,0) grid (9,4);
-          \draw[color=black, ultra thin] (0,-5) grid (4,-1);
-          \draw[color=black, ultra thin] (5,-5) grid (9,-1);
+          % extra sub map labels
+          \node[below] at (2,-0.1) {\small{\@karnaughmap@var@labelZ@$=00$}};
+          \node[below] at (7,-0.1) {\small{\@karnaughmap@var@labelZ@$=01$}};
+          \node[below] at (2,-5.1) {\small{\@karnaughmap@var@labelZ@$=10$}};
+          \node[below] at (7,-5.1) {\small{\@karnaughmap@var@labelZ@$=11$}};
         \fi
-      % [END]}
-      % labels {[START]
-        \IfStrEq{\@karnaughmap@option@label}{corner}{%
-          % if variables should be positioned at the corner
-          %
-          % for all dimensions
-          \draw[color=black, ultra thin] (0,\@karnaughmap@var@mapsizey@) --
-            node[pos=0.5, above right, anchor=south, rotate=-45] {\small{\@karnaughmap@var@labelX@}}
-            node[pos=0.5, below left, anchor=north, rotate=-45] {\small{\@karnaughmap@var@labelY@}}
-            ++(135:1);
-          % when there are 2 sub maps
-          \ifnum\@karnaughmap@var@mapsizez@=2
-            % extra sub map labels
-            \node[below] at (2,-0.1) {\small{\@karnaughmap@var@labelZ@$=0$}};
-            \node[below] at (7,-0.1) {\small{\@karnaughmap@var@labelZ@$=1$}};
-          \fi
-          % when there are 4 sub maps
-          \ifnum\@karnaughmap@var@mapsizez@=4
-            % extra sub map labels
-            \node[below] at (2,-0.1) {\small{\@karnaughmap@var@labelZ@$=00$}};
-            \node[below] at (7,-0.1) {\small{\@karnaughmap@var@labelZ@$=01$}};
-            \node[below] at (2,-5.1) {\small{\@karnaughmap@var@labelZ@$=10$}};
-            \node[below] at (7,-5.1) {\small{\@karnaughmap@var@labelZ@$=11$}};
-          \fi
-        }{%
-          % if variables should be positioned in the middle(top and side). Default.
-          %
-          % for all dimensions
-          \node[above] at (\@karnaughmap@var@mapsizex@*0.5,\@karnaughmap@var@mapsizey@+0.9) {\small{\@karnaughmap@var@labelX@}};
-          \node[left] at (-0.9,\@karnaughmap@var@mapsizey@*0.5) {\small{\@karnaughmap@var@labelY@}};
-          % when there are 2 sub maps
-          \ifnum\@karnaughmap@var@mapsizez@=2
-            \node[above] at (7,4.9) {\small{\@karnaughmap@var@labelX@}};
-            % extra sub map labels
-            \node[below] at (2,-0.1) {\small{\@karnaughmap@var@labelZ@$=0$}};
-            \node[below] at (7,-0.1) {\small{\@karnaughmap@var@labelZ@$=1$}};
-          \fi
-          % when there are 4 sub maps
-          \ifnum\@karnaughmap@var@mapsizez@=4
-            \node[above] at (7,4.9) {\small{\@karnaughmap@var@labelX@}};
-            \node[left] at (-0.9,-3) {\small{\@karnaughmap@var@labelY@}};
-            % extra sub map labels
-            \node[below] at (2,-0.1) {\small{\@karnaughmap@var@labelZ@$=00$}};
-            \node[below] at (7,-0.1) {\small{\@karnaughmap@var@labelZ@$=01$}};
-            \node[below] at (2,-5.1) {\small{\@karnaughmap@var@labelZ@$=10$}};
-            \node[below] at (7,-5.1) {\small{\@karnaughmap@var@labelZ@$=11$}};
-          \fi
-        }
-      % [END]}
-      % data
-      \matrix[
-        matrix of nodes,
-        ampersand replacement=\&,
-        column sep={1cm,between origins},
-        row sep={1cm,between origins},
-      ] at (\@karnaughmap@var@mapsizex@*0.5+\@karnaughmap@local@maprealignmentx@,\@karnaughmap@var@mapsizey@*0.5+\@karnaughmap@local@maprealignmenty@) {
-        \@karnaughmap@local@matrixtemplate@%
-      };
+      }{%
+        % if variables should be positioned in the middle(top and side). Default.
+        %
+        % for all dimensions
+        \node[above] at (\@karnaughmap@var@mapsizex@*0.5,\@karnaughmap@var@mapsizey@+0.9) {\small{\@karnaughmap@var@labelX@}};
+        \node[left] at (-0.9,\@karnaughmap@var@mapsizey@*0.5) {\small{\@karnaughmap@var@labelY@}};
+        % when there are 2 sub maps
+        \ifnum\@karnaughmap@var@mapsizez@=2
+          \node[above] at (7,4.9) {\small{\@karnaughmap@var@labelX@}};
+          % extra sub map labels
+          \node[below] at (2,-0.1) {\small{\@karnaughmap@var@labelZ@$=0$}};
+          \node[below] at (7,-0.1) {\small{\@karnaughmap@var@labelZ@$=1$}};
+        \fi
+        % when there are 4 sub maps
+        \ifnum\@karnaughmap@var@mapsizez@=4
+          \node[above] at (7,4.9) {\small{\@karnaughmap@var@labelX@}};
+          \node[left] at (-0.9,-3) {\small{\@karnaughmap@var@labelY@}};
+          % extra sub map labels
+          \node[below] at (2,-0.1) {\small{\@karnaughmap@var@labelZ@$=00$}};
+          \node[below] at (7,-0.1) {\small{\@karnaughmap@var@labelZ@$=01$}};
+          \node[below] at (2,-5.1) {\small{\@karnaughmap@var@labelZ@$=10$}};
+          \node[below] at (7,-5.1) {\small{\@karnaughmap@var@labelZ@$=11$}};
+        \fi
+      }
+    % [END]}
+    % data
+    \matrix[
+      matrix of nodes,
+      ampersand replacement=\&,
+      column sep={1cm,between origins},
+      row sep={1cm,between origins},
+    ] at (\@karnaughmap@var@mapsizex@*0.5+\@karnaughmap@local@maprealignmentx@,\@karnaughmap@var@mapsizey@*0.5+\@karnaughmap@local@maprealignmenty@) {
+      \@karnaughmap@local@matrixtemplate@%
+    };
 }
 % ^^A ##########################################################################
 % ^^A ##########################################################################
