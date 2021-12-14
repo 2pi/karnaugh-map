@@ -1,0 +1,27 @@
+name: Test
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # Check-out the repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v2
+
+      - name: Environment setup
+        run: |
+          sudo apt-get update -qq
+          # install latex
+          sudo apt-get install --no-install-recommends --yes texlive-latex-base texlive-latex-extra
+          # install dependecies for diff-pdf
+          sudo apt-get install --yes make automake g++ libpoppler-glib-dev poppler-utils libwxgtk3.0-gtk3-dev
+          # build diff-pdf
+          wget https://github.com/vslavik/diff-pdf/archive/master.tar.gz
+          tar xf master.tar.gz
+          pushd diff-pdf-master && ./bootstrap && ./configure && make && sudo make install && popd
+
+      - name: Compile and run
+        run: |
+          cd $GITHUB_WORKSPACE
+          pdflatex -halt-on-error -interaction=nonstopmode karnaugh-map.ins
+          pdflatex -halt-on-error -interaction=nonstopmode karnaugh-map.dtx
+          ./test.sh
