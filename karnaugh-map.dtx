@@ -228,9 +228,11 @@
   prefix=@karnaughmap@option@,
 }
 \DeclareStringOption[middle]{label}[middle]
+\DeclareStringOption[]{implicantcolors}[]
 \ProcessKeyvalOptions*
 %% environment options
 \define@key{karnaugh-map}{label}[middle]{\renewcommand{\@karnaughmap@option@label}{#1}}
+\define@key{karnaugh-map}{implicantcolors}[]{\renewcommand{\@karnaughmap@option@implicantcolors}{#1}}
 
 %% render in black and white or color default to '0'(false/color)
 \newcommand{\@karnaughmap@var@bw@}{0}
@@ -313,6 +315,20 @@
   \begingroup
     % parse environment options
     \setkeys{karnaugh-map}{#1}%
+    %
+    % check if implicant colors are specified
+    \IfStrEq{\@karnaughmap@option@implicantcolors}{}{}{%
+      % ensure no empty colors are specified
+      \IfSubStr{\@karnaughmap@option@implicantcolors}{,,}{%
+        \PackageError{karnaugh-map}{%
+          Incorrect usage of option implicantcolors%
+        }{%
+          The option implicantcolors is a comma separated list of colors with no gap. You used two consecutive commas.%
+        }%
+      }{}%
+      % add comma at beginning and end. then remove duplicates
+      \StrSubstitute{,\@karnaughmap@option@implicantcolors,}{,,}{,}[\@karnaughmap@var@colors@]%
+    }%
     %
     % determinate if markings should be color or black and white
     \IfBooleanTF{#2}{%
@@ -1374,6 +1390,20 @@
 %\end{verbatim}
 %
 % \textbf{Available options are:}
+%
+% \texttt{implicantcolors}: Use this option to specify a comma separated list of implicant colors to be used. Each color is used in order and only once per map, when there are no colors left the remaining implicants are colored in \texttt{cyan}. Note; the opacity of the colors are turned down. Default: \texttt{\{red,green,yellow,cyan,blue,magenta\}}.
+%
+% \begin{figure}[H]
+%   \centering
+%   \resizebox{.25\textwidth}{!}{%
+%     \begin{karnaugh-map}(implicantcolors={orange,violet})[2][2][1]
+%       \minterms{1,2}
+%       \autoterms[0]
+%       \implicant{1}{1}
+%       \implicant{2}{2}
+%     \end{karnaugh-map}%
+%   }
+% \end{figure}
 %
 % \texttt{label}: The input variable labels can either be positioned on the top and the side of the karnaugh-map(\texttt{label=middle}). Alternatively they can be positioned in the top--left corner(\texttt{label=corner}). Default: \texttt{middle}.
 %
