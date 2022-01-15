@@ -1,5 +1,5 @@
 % \iffalse meta-comment
-% Copyright (C) 2015, 2016, 2017 Mattias Jacobsson and contributors
+% Copyright (C) 2015-2022 Mattias Jacobsson and contributors
 % This work, karnaugh-map, is written from the ground up by Mattias Jacobsson. However the general implementation idea is based on the work published on [TeX - LaTeX Stack Exchange](https://tex.stackexchange.com) by [Ignasi](https://tex.stackexchange.com/users/1952/ignasi) found [here](https://tex.stackexchange.com/a/140581) and [here](https://tex.stackexchange.com/a/36879) which is licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/). karnaugh-map is therefore licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/). Contributors include [Oscar Gustafsson](https://github.com/oscargus).
 % \fi
 %
@@ -7,12 +7,12 @@
 %
 %<package>
 %<package>%%
-%<package>%% Copyright (C) 2015, 2016, 2017 Mattias Jacobsson and contributors
+%<package>%% Copyright (C) 2015-2022 Mattias Jacobsson and contributors
 %<package>%% This work, karnaugh-map, is written from the ground up by Mattias Jacobsson. However the general implementation idea is based on the work published on [TeX - LaTeX Stack Exchange](https://tex.stackexchange.com) by [Ignasi](https://tex.stackexchange.com/users/1952/ignasi) found [here](https://tex.stackexchange.com/a/140581) and [here](https://tex.stackexchange.com/a/36879) which is licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/). karnaugh-map is therefore licensed under [CC BY-SA](https://creativecommons.org/licenses/by-sa/3.0/). Contributors include [Oscar Gustafsson](https://github.com/oscargus).
 %<package>%%
 %<package>
 %<package>\NeedsTeXFormat{LaTeX2e}
-%<package>\ProvidesPackage{karnaugh-map}[2017/02/20 v1.1 Draw Karnaugh Maps]
+%<package>\ProvidesPackage{karnaugh-map}[2022/01/15 v2.0 Draw Karnaugh Maps]
 %
 %<*driver>
   \documentclass{ltxdoc}
@@ -266,6 +266,7 @@
 %    \end{macrocode}
 % \fi
 % \begin{environment}{karnaugh-map}
+%    \changes{v2.0}{2018/12/13}{API change: variable labels are now specified separately.}
 %    The |karnaugh-map| environment is the base for this package, and everything related to this package happens inside an instances of this environment.
 %
 %    \textbf{Usage:}
@@ -1392,6 +1393,7 @@
 % \textbf{Available options are:}
 %
 % \texttt{implicantcolors}: Use this option to specify a comma separated list of implicant colors to be used. Each color is used in order and only once per map, when there are no colors left the remaining implicants are colored in \texttt{cyan}. Note; the opacity of the colors are turned down. Default: \texttt{\{red,green,yellow,cyan,blue,magenta\}}.
+% \changes{v2.0}{2021/12/15}{Support custom implicant colors}
 %
 % \begin{figure}[H]
 %   \centering
@@ -1406,6 +1408,7 @@
 % \end{figure}
 %
 % \texttt{label}: The input variable labels can either be positioned on the top and the side of the karnaugh-map(\texttt{label=middle}). Alternatively they can be positioned in the top--left corner(\texttt{label=corner}). Default: \texttt{middle}.
+% \changes{v2.0}{2018/11/20}{Support alternate input label position}
 %
 % \begin{figure}[H]
 %   \centering
