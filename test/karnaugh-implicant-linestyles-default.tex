@@ -1,7 +1,7 @@
 \documentclass{standalone}
-\usepackage[linestyles]{../karnaugh-map}
+\usepackage{../karnaugh-map}
 \begin{document}
-    \begin{karnaugh-map}[4][4][2][$BA$][$DC$][$E$]
+    \begin{karnaugh-map}(linestyles)[4][4][2][$BA$][$DC$][$E$]
         \minterms{0,1,9,11,13,15,16,17,20,21,25,26,27,30,31}
         \autoterms[0]
         \implicant{0}{1}[0,1]
@@ -10,7 +10,7 @@
         \implicant{31}{26}
         \implicantedge{1}{1}{9}{9}[0,1]
     \end{karnaugh-map}
-    \begin{karnaugh-map}*[4][4][2][$BA$][$DC$][$E$]
+    \begin{karnaugh-map}(linestyles)*[4][4][2][$BA$][$DC$][$E$]
         \minterms{0,1,9,11,13,15,16,17,20,21,25,26,27,30,31}
         \autoterms[0]
         \implicant{0}{1}[0,1]
