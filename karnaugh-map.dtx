@@ -121,14 +121,6 @@
 }
 
 %% convert decimal to line style
-\pgfkeys{%
-  /tikz/LineStyleA/.style={semithick,solid},
-  /tikz/LineStyleB/.style={semithick,dash dot dot},
-  /tikz/LineStyleC/.style={thin,double distance=0.8pt},
-  /tikz/LineStyleD/.style={ultra thick},
-  /tikz/LineStyleE/.style={semithick,dashed},
-  /tikz/LineStyleF/.style={semithick,densely dotted},
-}
 \newcommand{\@karnaughmap@func@decimaltolinestyle@}[1]{%
   \if@karnaughmap@option@linestyles
     \ifnum#1=1 LineStyleA\fi
@@ -572,7 +564,14 @@
       Existing templates have the following dimensions: 2x2x1, 2x4x1, 4x2x1, 4x4x1, 4x4x2, and 4x4x4.
     }%
   \fi
-  \begin{tikzpicture}
+  \begin{tikzpicture}[
+    LineStyleA/.style={semithick,solid},
+    LineStyleB/.style={semithick,dash dot dot},
+    LineStyleC/.style={thin,double distance=0.8pt},
+    LineStyleD/.style={ultra thick},
+    LineStyleE/.style={semithick,dashed},
+    LineStyleF/.style={semithick,densely dotted},
+  ]
     % grid {[START]
       % for all dimensions
       \draw[color=black, ultra thin] (0,0) grid (\@karnaughmap@var@mapsizex@,\@karnaughmap@var@mapsizey@);
