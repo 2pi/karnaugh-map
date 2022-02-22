@@ -703,13 +703,13 @@
 % ^^A ####                              CODE                                ####
 % ^^A ##########################################################################
 % ^^A ##########################################################################
+\newcount\@karnaughmap@local@max@\relax
 \DeclareDocumentCommand{\autoterms}{O{-}} {%
   % bail if outside environment karnaugh-map
   \@karnaughmap@func@bailoutsideenvironment@{}
   %
   \begingroup
     % calculate max cell number {[START]
-      \newcount\@karnaughmap@local@max@\relax
       \@karnaughmap@local@max@=\@karnaughmap@var@mapsizex@\relax
       \multiply\@karnaughmap@local@max@ by \@karnaughmap@var@mapsizey@\relax
       \multiply\@karnaughmap@local@max@ by \@karnaughmap@var@mapsizez@\relax
@@ -799,6 +799,7 @@
 % ^^A ####                              CODE                                ####
 % ^^A ##########################################################################
 % ^^A ##########################################################################
+\newcount\@karnaughmap@local@cellcount@\relax
 \DeclareDocumentCommand{\manualterms}{m} {%
   % bail if outside environment karnaugh-map
   \@karnaughmap@func@bailoutsideenvironment@{}
@@ -811,7 +812,6 @@
   }
   % update \@karnaughmap@var@usedcells@ (previous cells + all cells up to \@karnaughmap@local@cellcount@ are used now) {[START]
     \newcommand{\@karnaughmap@local@tmpusedcells@}{}
-    \newcount\@karnaughmap@local@cellcount@\relax
     % count number of cells in #1 {[START]
       \StrCount{#1}{,}[\@karnaughmap@local@tmpusedcells@]
       \@karnaughmap@local@cellcount@=\@karnaughmap@local@tmpusedcells@\relax
@@ -1040,6 +1040,8 @@
 % ^^A ####                              CODE                                ####
 % ^^A ##########################################################################
 % ^^A ##########################################################################
+\newcount\@karnaughmap@local@northwest@\relax
+\newcount\@karnaughmap@local@southeast@\relax
 \DeclareDocumentCommand{\implicant}{m m O{0}} {%
   % bail if outside environment karnaugh-map
   \@karnaughmap@func@bailoutsideenvironment@{}
@@ -1053,8 +1055,6 @@
       % make sure we don't try to draw on non existing sub maps
       \ifnum\map<\@karnaughmap@var@mapsizez@
         % calculate cell number for the specified sub maps {[START]
-          \newcount\@karnaughmap@local@northwest@\relax
-          \newcount\@karnaughmap@local@southeast@\relax
           \@karnaughmap@local@northwest@=\map\relax
           \@karnaughmap@local@southeast@=\map\relax
           \multiply\@karnaughmap@local@northwest@ by 16\relax
@@ -1139,6 +1139,10 @@
 % ^^A ####                              CODE                                ####
 % ^^A ##########################################################################
 % ^^A ##########################################################################
+\newcount\@karnaughmap@local@testcaseone@\relax
+\newcount\@karnaughmap@local@testcasetwo@\relax
+\newcount\@karnaughmap@local@coordinateonecounter@\relax
+\newcount\@karnaughmap@local@coordinatetwocounter@\relax
 \DeclareDocumentCommand{\implicantedge}{m m m m O{0}} {%
   % bail if outside environment karnaugh-map
   \@karnaughmap@func@bailoutsideenvironment@{}
@@ -1156,8 +1160,6 @@
       \newcommand{\@karnaughmap@local@fillcontent@}{}
     % [END]}
     % determinate if this is an horizontal or vertical implicant {[START]
-      \newcount\@karnaughmap@local@testcaseone@\relax
-      \newcount\@karnaughmap@local@testcasetwo@\relax
       \@karnaughmap@local@testcaseone@=#1\relax
       \@karnaughmap@local@testcasetwo@=#1\relax
       \advance\@karnaughmap@local@testcaseone@ by -#2\relax
@@ -1196,8 +1198,6 @@
             \fi
           % [END]}
           % calculate cell numbers for the specified sub map {[START]
-            \newcount\@karnaughmap@local@coordinateonecounter@\relax
-            \newcount\@karnaughmap@local@coordinatetwocounter@\relax
             \@karnaughmap@local@coordinateonecounter@=\map\relax
             \@karnaughmap@local@coordinatetwocounter@=\map\relax
             \multiply\@karnaughmap@local@coordinateonecounter@ by 16\relax
@@ -1323,6 +1323,7 @@
 % ^^A ####                              CODE                                ####
 % ^^A ##########################################################################
 % ^^A ##########################################################################
+\newcount\@karnaughmap@local@coordinate@\relax
 \DeclareDocumentCommand{\implicantcorner}{O{0}} {%
   % bail if outside environment karnaugh-map
   \@karnaughmap@func@bailoutsideenvironment@{}
@@ -1338,7 +1339,6 @@
         % loop through the four corners
         \foreach \corner in {0,2,8,10} {%
           % calculate corner's properties {[START]
-            \newcount\@karnaughmap@local@coordinate@\relax
             \@karnaughmap@local@coordinate@=\map\relax
             \multiply\@karnaughmap@local@coordinate@ by 16\relax
             \advance\@karnaughmap@local@coordinate@ by \corner\relax
