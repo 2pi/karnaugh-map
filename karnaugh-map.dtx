@@ -244,11 +244,13 @@
 \DeclareStringOption[middle]{label}[middle]
 \DeclareStringOption[]{implicantcolors}[]
 \DeclareBoolOption[false]{linestyles}
+\DeclareBoolOption[false]{bw}
 \ProcessKeyvalOptions*
 %% environment options
 \define@key{karnaugh-map}{label}[middle]{\renewcommand{\@karnaughmap@option@label}{#1}}
 \define@key{karnaugh-map}{implicantcolors}[]{\renewcommand{\@karnaughmap@option@implicantcolors}{#1}}
 \define@key{karnaugh-map}{linestyles}[false]{\@karnaughmap@option@linestylestrue}
+\define@key{karnaugh-map}{bw}[false]{\@karnaughmap@option@bwtrue}
 
 %% render in black and white or color default to '0'(false/color)
 \newcommand{\@karnaughmap@var@bw@}{0}
@@ -355,6 +357,11 @@
       % should be color
       \renewcommand{\@karnaughmap@var@bw@}{0}%
     }%
+    % overwrite black and white setting if option bw set
+    \if@karnaughmap@option@bw
+      % should be black and white
+      \renewcommand{\@karnaughmap@var@bw@}{1}%
+    \fi
     %
     % store map size {[START]
       \renewcommand{\@karnaughmap@var@mapsizex@}{#3}%
