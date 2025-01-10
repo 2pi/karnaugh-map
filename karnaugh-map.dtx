@@ -21,6 +21,7 @@
   \usepackage{tabularx}% for documentation
   \usepackage{float}% for documentation
   \usepackage{hyperref}% for documentation
+  \usepackage{upquote}% for documentation; specifically for apostrophes (`) in verbatim environment
   \setlength{\parindent}{0pt}
   \setlength{\parskip}{0.6em}
   \EnableCrossrefs
@@ -289,17 +290,17 @@
 %
 %    \begin{tabularx}{\textwidth}{l X}
 %      \small{|\begin{karnaugh-map}|} & \\
-%      \small{\parg{options}}     & \small{See section \ref{sec:usage:options}. Default: ''''} \\
+%      \small{\parg{options}}     & \small{See section \ref{sec:usage:options}. Default: ``''} \\
 %      \small{\meta{*}}           & \small{One asterisk for black and white implicants, non for colorized implicants} \\
-%      \small{\oarg{X size}}      & \small{Number of X-axis cells. Default: ''4''} \\
-%      \small{\oarg{Y size}}      & \small{Number of Y-axis cells. Default: ''4''} \\
-%      \small{\oarg{Z size}}      & \small{Number of X$\times$Y submaps. Default: ''1''} \\
-%      \small{\oarg{label A}}\footnotemark     & \small{Label for the variable one. Default: ''$X_0$''} \\
-%      \small{\oarg{label B}}\footnotemark[\value{footnote}]     & \small{Label for the variable two. Default: ''$X_1$''} \\
-%      \small{\oarg{label C}}\footnotemark[\value{footnote}]     & \small{Label for the variable three. Default: ''$X_2$''} \\
-%      \small{\oarg{label D}}     & \small{Label for the variable four. Default: ''$X_3$''} \\
-%      \small{\oarg{label E}}     & \small{Label for the variable five. Default: ''$X_4$''} \\
-%      \small{\oarg{label F}}     & \small{Label for the variable six. Default: ''$X_5$''} \\
+%      \small{\oarg{X size}}      & \small{Number of X-axis cells. Default: ``4''} \\
+%      \small{\oarg{Y size}}      & \small{Number of Y-axis cells. Default: ``4''} \\
+%      \small{\oarg{Z size}}      & \small{Number of X$\times$Y submaps. Default: ``1''} \\
+%      \small{\oarg{label A}}\footnotemark     & \small{Label for the variable one. Default: ``$X_0$''} \\
+%      \small{\oarg{label B}}\footnotemark[\value{footnote}]     & \small{Label for the variable two. Default: ``$X_1$''} \\
+%      \small{\oarg{label C}}\footnotemark[\value{footnote}]     & \small{Label for the variable three. Default: ``$X_2$''} \\
+%      \small{\oarg{label D}}     & \small{Label for the variable four. Default: ``$X_3$''} \\
+%      \small{\oarg{label E}}     & \small{Label for the variable five. Default: ``$X_4$''} \\
+%      \small{\oarg{label F}}     & \small{Label for the variable six. Default: ``$X_5$''} \\
 %    \end{tabularx}
 %
 %     \footnotetext{The arguments \oarg{label A}, \oarg{label B}, and \oarg{label C} are currently backward compatible with \oarg{X label}, \oarg{Y label}, and \oarg{Z label} in version v1's definition of the |karnaugh-map| environment. This works through a heuristic method. However the v1 definition is now deprecated and this backward compatibility may disappear in a later version.}
@@ -685,12 +686,12 @@
 %
 %    \begin{tabularx}{\textwidth}{l X}
 %      \small{|\autoterms|}   & \\
-%      \small{\oarg{content}} & \small{Content for the remaining unfilled cells. Default: ''-''}
+%      \small{\oarg{content}} & \small{Content for the remaining unfilled cells. Default: ``-''}
 %    \end{tabularx}
 %
 %    \textbf{Example:}
 %
-%    Fill all remaining unfilled cells with ''-''.
+%    Fill all remaining unfilled cells with ``-''.
 %    \begin{verbatim}
 %\begin{karnaugh-map}
 %  \autoterms[-]
@@ -735,18 +736,18 @@
 % \end{macro}
 %
 % \begin{macro}{\indeterminants}
-%    The |\indeterminants| command fills the specified cells with ''-'' if they aren't already filled. Order of the cell numbers does not matter.
+%    The |\indeterminants| command fills the specified cells with ``-'' if they aren't already filled. Order of the cell numbers does not matter.
 %
 %    \textbf{Usage:}
 %
 %    \begin{tabularx}{\textwidth}{l X}
 %      \small{|\indeterminants|} & \\
-%      \small{\marg{cells}}   & \small{Comma separated list of cells to fill with ''-''}
+%      \small{\marg{cells}}   & \small{Comma separated list of cells to fill with ``-''}
 %    \end{tabularx}
 %
 %    \textbf{Example:}
 %
-%    Fill the top left and right cell with ''-''.
+%    Fill the top left and right cell with ``-''.
 %    \begin{verbatim}
 %\begin{karnaugh-map}
 %  \indeterminants{0,2}
@@ -835,18 +836,18 @@
 %
 % \newpage
 % \begin{macro}{\maxterms}
-%    The |\maxterms| command fills the specified cells with ''0'' if they aren't already filled. Order of the cell numbers does not matter.
+%    The |\maxterms| command fills the specified cells with ``0'' if they aren't already filled. Order of the cell numbers does not matter.
 %
 %    \textbf{Usage:}
 %
 %    \begin{tabularx}{\textwidth}{l X}
 %      \small{|\maxterms|}  & \\
-%      \small{\marg{cells}} & \small{Comma separated list of cells to fill with ''0''} \\
+%      \small{\marg{cells}} & \small{Comma separated list of cells to fill with ``0''} \\
 %    \end{tabularx}
 %
 %    \textbf{Example:}
 %
-%    Fill the top left and right cell with ''0''.
+%    Fill the top left and right cell with ``0''.
 %    \begin{verbatim}
 %\begin{karnaugh-map}
 %  \maxterms{0,2}
@@ -875,18 +876,18 @@
 % \end{macro}
 %
 % \begin{macro}{\minterms}
-%    The |\minterms| command fills the specified cells with ''1'' if they aren't already filled. Order of the cell numbers does not matter.
+%    The |\minterms| command fills the specified cells with ``1'' if they aren't already filled. Order of the cell numbers does not matter.
 %
 %    \textbf{Usage:}
 %
 %    \begin{tabularx}{\textwidth}{l X}
 %      \small{|\minterms|}  & \\
-%      \small{\marg{cells}} & \small{Comma separated list of cells to fill with ''1''} \\
+%      \small{\marg{cells}} & \small{Comma separated list of cells to fill with ``1''} \\
 %    \end{tabularx}
 %
 %    \textbf{Example:}
 %
-%    Fill the top left and right cell with ''1''.
+%    Fill the top left and right cell with ``1''.
 %    \begin{verbatim}
 %\begin{karnaugh-map}
 %  \minterms{0,2}
@@ -928,7 +929,7 @@
 %
 %    \textbf{Example:}
 %
-%    Fill the top left and right cell with ''X''.
+%    Fill the top left and right cell with ``X''.
 %    \begin{verbatim}
 %\begin{karnaugh-map}
 %  \terms{0,2}{X}
@@ -1000,7 +1001,7 @@
 %      \small{|\implicant|}          & \\
 %      \small{\marg{northwest cell}} & \small{The most northwest cell in the implicant} \\
 %      \small{\marg{southeast cell}} & \small{The most southeast cell in the implicant} \\
-%      \small{\oarg{submaps}}        & \small{Comma separated list of submaps the implicant should be drawn on. Default: ''0''} \\
+%      \small{\oarg{submaps}}        & \small{Comma separated list of submaps the implicant should be drawn on. Default: ``0''} \\
 %    \end{tabularx}
 %
 %    \textbf{Example:}
@@ -1113,7 +1114,7 @@
 %      \small{\marg{northwest part - southeast cell}} & \small{The most southeast cell in the northwest part of the implicant} \\
 %      \small{\marg{southeast part - northwest cell}} & \small{The most northwest cell in the southeast part of the implicant} \\
 %      \small{\marg{southeast part - southeast cell}} & \small{The most southeast cell in the southeast part of the implicant} \\
-%      \small{\oarg{submaps}}                         & \small{Comma separated list of submaps the implicant should be drawn on. Default: ''0''} \\
+%      \small{\oarg{submaps}}                         & \small{Comma separated list of submaps the implicant should be drawn on. Default: ``0''} \\
 %    \end{tabularx}
 %
 %    \textbf{Example:}
@@ -1297,7 +1298,7 @@
 %
 %    \begin{tabularx}{\textwidth}{l X}
 %      \small{|\implicantcorner|} & \\
-%      \small{\oarg{submaps}}     & \small{Comma separated list of submaps the implicant should be drawn on. Default: ''0''} \\
+%      \small{\oarg{submaps}}     & \small{Comma separated list of submaps the implicant should be drawn on. Default: ``0''} \\
 %    \end{tabularx}
 %
 %    \textbf{Example:}
