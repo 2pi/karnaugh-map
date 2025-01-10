@@ -62,10 +62,10 @@
 %\maketitle
 %
 % \begin{abstract}
-%   This package draws karnaugh maps with 2, 3, 4, 5, and 6 variables.
-%   It also contains commands for filling the karnaugh map with terms semi-automatically or manually.
+%   This package draws Karnaugh maps with 2, 3, 4, 5, and 6 variables.
+%   It also contains commands for filling the Karnaugh map with terms semi-automatically or manually.
 %   Last but not least it contains commands for drawing implicants on top of the map.
-%   Below is an example of a two variable karnaugh map of $X_0 \oplus X_1$.
+%   Below is an example of a two variable Karnaugh map of $X_0 \oplus X_1$.
 % \end{abstract}
 % \begin{figure}[H]
 %   \centering
@@ -306,7 +306,7 @@
 %
 %    \textbf{Example:}
 %
-%    Four variable karnaugh map, colorized, with X label $X_1X_0$, and Y label $X_3X_2$.
+%    Four variable Karnaugh map, colorized, with X label $X_1X_0$, and Y label $X_3X_2$.
 %    \begin{verbatim}
 %\begin{karnaugh-map}
 %\end{karnaugh-map}
@@ -316,7 +316,7 @@
 %\begin{karnaugh-map}[4][4][1][$X_0$][$X_1$][$X_2$][$X_3$]
 %\end{karnaugh-map}
 %    \end{verbatim}
-%    Six variable karnaugh map, black and white, with X label $ba$, Y label $dc$, and Z label $fe$.
+%    Six variable Karnaugh map, black and white, with X label $ba$, Y label $dc$, and Z label $fe$.
 %    \begin{verbatim}
 %\begin{karnaugh-map}*[4][4][4][$a$][$b$][$c$][$d$][$e$][$f$]
 %\end{karnaugh-map}
@@ -679,7 +679,7 @@
 % \newpage
 % \subsection{Terms}
 % \begin{macro}{\autoterms}
-%    The |\autoterms| command fills the remaining unfilled cells of the karnaugh map with the contents of the optional argument.
+%    The |\autoterms| command fills the remaining unfilled cells of the Karnaugh map with the contents of the optional argument.
 %
 %    \textbf{Usage:}
 %
@@ -1303,7 +1303,7 @@
 %    \textbf{Example:}
 %
 %    \begin{multicols}{2}
-%      [Draw an implicant around all corners on 0th and 2nd submap of a six variable karnaugh map.]
+%      [Draw an implicant around all corners on 0th and 2nd submap of a six variable Karnaugh map.]
 %      \begin{verbatim}
 %\begin{karnaugh-map}[4][4][4]
 %  \implicantcorner[0,2]
@@ -1465,7 +1465,7 @@
 % \newpage
 % \section{Examples}
 %   \begin{multicols}{2}
-%     [Draw a karnaugh map for \small{$f(a,b,c,d,e,f) =$\\$\Sigma(0,1,2,3,8,13,17,20,22,28,33,32,30,19,40,35,49,42,34,10,60,54,62,51,52)$\\$+d(15,45,47)$}.]
+%     [Draw a Karnaugh map for \small{$f(a,b,c,d,e,f) =$\\$\Sigma(0,1,2,3,8,13,17,20,22,28,33,32,30,19,40,35,49,42,34,10,60,54,62,51,52)$\\$+d(15,45,47)$}.]
 %     \begin{verbatim}
 %\begin{karnaugh-map}[4][4][4][$a$][$b$][$c$][$d$][$e$][$f$]
 %  \minterms{0,1,2,3,8,13,17,20,22,28,
@@ -1495,7 +1495,7 @@
 %   \end{multicols}
 %
 %   \begin{multicols}{2}
-%     [Draw a karnaugh map for \small{$f(X_0,X_1) = \Pi(0,2,3)$} in black and white.]
+%     [Draw a Karnaugh map for \small{$f(X_0,X_1) = \Pi(0,2,3)$} in black and white.]
 %     \begin{verbatim}
 %\begin{karnaugh-map}*[2][2][1]
 %  \maxterms{0,2,3}
@@ -1551,7 +1551,7 @@
 % \newpage
 % \section{Miscellaneous}
 % \subsection*{Resizing}
-% The karnaugh maps produced with this package have a prespecified size which can not be changed. However you can resize the karnaugh map to your desired size. Resizing can be done using the |\resizebox| command from the graphicx package. Scaling the karnaugh map to fill the column width while preserving the aspect ratio can be done as follows.
+% The Karnaugh maps produced with this package have a prespecified size which can not be changed. However you can resize the Karnaugh map to your desired size. Resizing can be done using the |\resizebox| command from the graphicx package. Scaling the Karnaugh map to fill the column width while preserving the aspect ratio can be done as follows.
 % \begin{verbatim}
 %\resizebox{\columnwidth}{!}{%
 %  \begin{karnaugh-map}
@@ -1562,6 +1562,6 @@
 % \subsection*{Comma separated lists}
 % Anywhere in this package where a comma separated list is used data should only be comma separated. Therefore a comma and space separated list will for example \textit{not} work properly.
 %
-% An example of errorious usage related to the \small{\marg{cells}} parameter in the terms related commands can result in multiple zeros, ones and other terms overlapping in the same cell in the outputted karnaugh map.
+% An example of errorious usage related to the \small{\marg{cells}} parameter in the terms related commands can result in multiple zeros, ones and other terms overlapping in the same cell in the outputted Karnaugh map.
 %
 \endinput
