@@ -340,7 +340,6 @@
   \end{tikzpicture}
 }
 \NewDocumentEnvironment{karnaugh-map-inner}{D(){} s O{4} O{4} O{1}} {%
-  \begingroup
     % parse environment options
     \setkeys{karnaugh-map}{#1}%
     %
@@ -376,9 +375,8 @@
     % only 9 arguments are directly supported. jump to helper function
     % to parse remaining arguments and finish initialization.
     \@karnaughmap@func@karnaughstart@%
-}{
-  \endgroup
-}
+}{}
+
 \DeclareDocumentCommand{\@karnaughmap@func@karnaughstart@}{oooooo} {%
   % parse label args {[START]
     % try to maintain backwards compatibility with v1 while enabling users to separatly
