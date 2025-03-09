@@ -244,10 +244,12 @@
 \DeclareStringOption[middle]{label}[middle]
 \DeclareStringOption[]{implicantcolors}[]
 \DeclareBoolOption[false]{linestyles}
+\DeclareBoolOption[false]{omittikzpicture}
 \ProcessKeyvalOptions*
 %% environment options
 \define@key{karnaugh-map}{label}[middle]{\renewcommand{\@karnaughmap@option@label}{#1}}
 \define@key{karnaugh-map}{implicantcolors}[]{\renewcommand{\@karnaughmap@option@implicantcolors}{#1}}
+\define@key{karnaugh-map}{omittikzpicture}[false]{\@karnaughmap@option@omittikzpicturetrue}
 \define@key{karnaugh-map}{linestyles}[false]{\@karnaughmap@option@linestylestrue}
 
 %% render in black and white or color default to '0'(false/color)
@@ -329,19 +331,15 @@
 % ^^A ##########################################################################
 % ^^A ##########################################################################
 \NewDocumentEnvironment{karnaugh-map}{D(){} s O{4} O{4} O{1}} {%
-  \begin{tikzpicture}
-  \IfBooleanTF{#2}{%
-    \begin{karnaugh-map-inner}(#1)*[#3][#4][#5]%
-  }{%
-    \begin{karnaugh-map-inner}(#1)[#3][#4][#5]%
-  }
-}{%
-  \end{karnaugh-map-inner}
-  \end{tikzpicture}
-}
-\NewDocumentEnvironment{karnaugh-map-inner}{D(){} s O{4} O{4} O{1}} {%
+  \begingroup
     % parse environment options
     \setkeys{karnaugh-map}{#1}%
+    %
+    % check if the user wants us to omit begin/end{tikzpicture}
+    \if@karnaughmap@option@omittikzpicture\else
+      % wrap in tikzpicture for the user
+      \begin{tikzpicture}
+    \fi
     %
     % check if implicant colors are specified
     \IfStrEq{\@karnaughmap@option@implicantcolors}{}{}{%
@@ -375,7 +373,13 @@
     % only 9 arguments are directly supported. jump to helper function
     % to parse remaining arguments and finish initialization.
     \@karnaughmap@func@karnaughstart@%
-}{}
+}{
+    % end tikzpicture if the user did not want us to omit it
+    \if@karnaughmap@option@omittikzpicture\else
+      \end{tikzpicture}
+    \fi
+  \endgroup
+}
 
 \DeclareDocumentCommand{\@karnaughmap@func@karnaughstart@}{oooooo} {%
   % parse label args {[START]
