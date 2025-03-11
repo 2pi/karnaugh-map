@@ -1474,6 +1474,17 @@
 %   \end{karnaugh-map}
 % \end{figure}
 %
+% \texttt{omittikzpicture}: By default, the |karnaugh-map| environment creates its own |tikzpicture|. This option disables this behavior, and it would be expected that the user wraps the |karnaugh-map| environment in a |tikzpicture| environment. This is useful to make the |tikzexternal| package work with |karnaugh-map|, or to integrate |karnaugh-map| into a larger |tikzpicture|.
+%
+% \begin{figure}[H]
+%   \centering
+%   \rotatebox{-30}{%
+%     \begin{tikzpicture}
+%        \begin{karnaugh-map}(omittikzpicture)
+%        \end{karnaugh-map}
+%     \end{tikzpicture}}
+% \end{figure}
+%
 % \newpage
 % \section{Examples}
 %   \begin{multicols}{2}
