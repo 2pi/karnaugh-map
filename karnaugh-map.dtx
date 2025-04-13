@@ -1465,7 +1465,39 @@
 % \newpage
 % \section{Examples}
 %   \begin{multicols}{2}
-%     [Draw a karnaugh map for \small{$f(a,b,c,d,e,f) =$\\$\Sigma(0,1,2,3,8,13,17,20,22,28,33,32,30,19,40,35,49,42,34,10,60,54,62,51,52)$\\$+d(15,45,47)$}.]
+%     [
+%     Draw a Karnaugh map for \small{$F(a,b,c,d,e,f) =$\\$\Sigma(0,1,2,3,8,13,17,20,22,28,33,32,30,19,40,35,49,42,34,10,60,54,62,51,52)$\\$+d(15,45,47)$}.
+%     \begin{center}
+%     \begin{tabular}{c|cccccc|c}
+%     \hline
+%     \multicolumn{8}{c}{Truth Table} \\
+%     \hline
+%     Index & $f$ & $e$ & $d$ & $c$ & $b$ & $a$ & $F$ \\
+%     \hline
+%     0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+%     1 & 0 & 0 & 0 & 0 & 0 & 1 & 1 \\
+%     2 & 0 & 0 & 0 & 0 & 1 & 0 & 1 \\
+%     3 & 0 & 0 & 0 & 0 & 1 & 1 & 1 \\
+%     4 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+%     5 & 0 & 0 & 0 & 1 & 0 & 1 & 0 \\
+%     6 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\
+%     7 & 0 & 0 & 0 & 1 & 1 & 1 & 0 \\
+%     8 & 0 & 0 & 1 & 0 & 0 & 0 & 1 \\
+%     9 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+%     \vdots & \multicolumn{6}{c|}{\vdots} & \vdots \\
+%     15 & 0 & 0 & 1 & 1 & 1 & 1 & $\times$ \\
+%     \vdots & \multicolumn{6}{c|}{\vdots} & \vdots \\
+%     58 & 1 & 1 & 1 & 0 & 1 & 1 & 0 \\
+%     59 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\
+%     60 & 1 & 1 & 1 & 1 & 0 & 0 & 1 \\
+%     61 & 1 & 1 & 1 & 1 & 0 & 1 & 0 \\
+%     62 & 1 & 1 & 1 & 1 & 1 & 0 & 1 \\
+%     63 & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\
+%     \hline
+%     \end{tabular}
+%     \end{center}
+%     \vspace{3mm}
+%     ]
 %     \begin{verbatim}
 %\begin{karnaugh-map}[4][4][4][$a$][$b$][$c$][$d$][$e$][$f$]
 %  \minterms{0,1,2,3,8,13,17,20,22,28,
@@ -1494,8 +1526,26 @@
 %     }
 %   \end{multicols}
 %
+%   \newpage
 %   \begin{multicols}{2}
-%     [Draw a karnaugh map for \small{$f(X_0,X_1) = \Pi(0,2,3)$} in black and white.]
+%     [
+%     Draw a Karnaugh map for \small{$f(X_0,X_1) = \Pi(0,2,3)$} in black and white.
+%     \begin{center}
+%     \begin{tabular}{c|cc|c}
+%     \hline
+%     \multicolumn{4}{c}{Truth Table} \\
+%     \hline
+%     Index & $X_1$ & $X_0$ & $f$ \\
+%     \hline
+%     0 & 0 & 0 & 1 \\
+%     1 & 0 & 1 & 0 \\
+%     2 & 1 & 0 & 1 \\
+%     3 & 1 & 1 & 1 \\
+%     \hline
+%     \end{tabular}
+%     \end{center}
+%     \vspace{3mm}
+%     ]
 %     \begin{verbatim}
 %\begin{karnaugh-map}*[2][2][1]
 %  \maxterms{0,2,3}
@@ -1513,9 +1563,29 @@
 %     }
 %   \end{multicols}
 %
-%   \newpage
 %   \begin{multicols}{2}
-%     [Draw a variable entered map.]
+%     [
+%     Draw a variable entered map for \small{$f(a,b,c) = dc'b'a + c'ba + d'cba$.}
+%     \begin{center}
+%     \begin{tabular}{c|ccc|c|c|c}
+%     \hline
+%     \multicolumn{7}{c}{Truth Table for $f$} \\
+%     \hline
+%     Index & $c$ & $b$ & $a$ & Minterm & Maxterm & Variable Term \\
+%     \hline
+%     0 & 0 & 0 & 0 &   & 0 & \\
+%     1 & 0 & 0 & 1 &   &   & $d$ \\
+%     2 & 0 & 1 & 0 &   & 0 & \\
+%     3 & 0 & 1 & 1 & 1 &   & \\
+%     4 & 1 & 0 & 0 &   & 0 & \\
+%     5 & 1 & 0 & 1 &   & 0 & \\
+%     6 & 1 & 1 & 0 &   & 0 & \\
+%     7 & 1 & 1 & 1 &   &   & $d'$ \\
+%     \hline
+%     \end{tabular}
+%     \end{center}
+%     \vspace{3mm}
+%     ]
 %     \begin{verbatim}
 %\begin{karnaugh-map}[4][2][1][$a$][$b$][$c$]
 %  \maxterms{0,2,4,5,6}
@@ -1539,6 +1609,7 @@
 %     }
 %   \end{multicols}
 %
+% \newpage
 % \section{Dependencies}
 % \begin{itemize}
 %   \item keyval
