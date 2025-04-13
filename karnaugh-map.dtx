@@ -1116,7 +1116,7 @@
 %      \small{\oarg{submaps}}                         & \small{Comma separated list of submaps the implicant should be drawn on. Default: ''0''} \\
 %    \end{tabularx}
 %
-%    \textbf{Example:}
+%    \textbf{Example with four cells:}
 %
 %    \begin{multicols}{2}
 %      [Horizontal implicant over the submap edge containing the cells 4, 6, 12, and 14.]
@@ -1129,6 +1129,23 @@
 %      \resizebox{\columnwidth}{!}{%
 %        \begin{karnaugh-map}
 %          \implicantedge{4}{12}{6}{14}
+%        \end{karnaugh-map}%
+%      }
+%    \end{multicols}
+%
+%    \textbf{Example with two cells:}
+%
+%    \begin{multicols}{2}
+%      [Horizontal implicant over the submap edge containing the cells 4 and 6. Note the repetition of the 1st/2nd and 3rd/4th arguments.]
+%      \begin{verbatim}
+%\begin{karnaugh-map}
+%  \implicantedge{4}{4}{6}{6}
+%\end{karnaugh-map}
+%      \end{verbatim}
+%      \columnbreak
+%      \resizebox{\columnwidth}{!}{%
+%        \begin{karnaugh-map}
+%          \implicantedge{4}{4}{6}{6}
 %        \end{karnaugh-map}%
 %      }
 %    \end{multicols}
